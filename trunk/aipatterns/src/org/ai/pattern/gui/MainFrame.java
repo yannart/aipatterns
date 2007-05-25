@@ -185,5 +185,5 @@ private void jMenuItemSalirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FI
     private javax.swing.JMenuItem jMenuItemSalir;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
-    
+
 }

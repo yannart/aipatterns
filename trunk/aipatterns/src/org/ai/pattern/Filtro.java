@@ -10,6 +10,7 @@
 package org.ai.pattern;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 
@@ -22,7 +23,6 @@ public class Filtro implements Runnable{
     private BufferedImage imagen;
     private float[] matriz;
     private Filtrable parent;
-
     
     public Filtro(Filtrable parent){
         this.parent = parent;
@@ -35,13 +35,13 @@ public class Filtro implements Runnable{
                 return;
             }
             
-            java.lang.Thread thread = new java.lang.Thread(this);
+            Thread thread = new Thread(this);
             thread.start();
     }
     
     public void run() {
         int lado_matriz = (int) Math.sqrt(matriz.length);
-        ConvolveOp op = new ConvolveOp(new Kernel(lado_matriz, lado_matriz, matriz));
+        BufferedImageOp op = new ConvolveOp(new Kernel(lado_matriz, lado_matriz, matriz));
         BufferedImage nuevaImagen = op.filter(imagen, null);
         parent.imagenFiltrada(nuevaImagen);
     }

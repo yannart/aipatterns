@@ -38,7 +38,7 @@ public class ImageFrame extends javax.swing.JInternalFrame {
     }
     
     public BufferedImage getImage(){
-        return imagepanel.getImage();  
+        return imagepanel.getImage();
     }
     
     public void setImage(BufferedImage image){
@@ -76,7 +76,7 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPaneContenedor;
     // End of variables declaration//GEN-END:variables
@@ -87,7 +87,7 @@ public class ImageFrame extends javax.swing.JInternalFrame {
  */
 class ImagePanel extends JPanel{
     private BufferedImage image;
-    
+    int tmp = 0;
     /**
      * @param image Imagen contenida en el panel
      */
@@ -106,14 +106,13 @@ class ImagePanel extends JPanel{
     }
     
     public void setImage(BufferedImage imagen){
-        this.image = image;
+        this.image = imagen;
         this.repaint();
     }
     
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
-        if(image != null)
-            g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), this);
+        g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), this);
     }
 }
