@@ -22,7 +22,10 @@ public class ImageLoader {
     public static BufferedImage loadImage(File file){
         try {
             BufferedImage image = javax.imageio.ImageIO.read(file);
-            return image;
+            BufferedImage newimage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+            newimage.getGraphics().drawImage(image, 0, 0, null);
+            image.flush();
+            return newimage;
         }
         catch (IOException ex) {
             return null;
