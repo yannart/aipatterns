@@ -19,6 +19,8 @@ import org.ai.pattern.ImageLoader;
  */
 public class ImageFrame extends javax.swing.JInternalFrame {
     
+    private ImagePanel imagepanel;
+    
     /** Creates new form ImageFrame
      * @param file
      */
@@ -27,10 +29,20 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         this.setTitle(file.getName());
         
         BufferedImage image = ImageLoader.loadImage(file);
-        jScrollPaneContenedor.setViewportView(new ImagePanel(image));
+        
+        imagepanel = new ImagePanel(image);
+        jScrollPaneContenedor.setViewportView(imagepanel);
         try {
             this.setSelected(true);
         } catch (java.beans.PropertyVetoException e) {}
+    }
+    
+    public BufferedImage getImage(){
+        return imagepanel.getImage();  
+    }
+    
+    public void setImage(BufferedImage image){
+        imagepanel.setImage(image);
     }
     
     /** This method is called from within the constructor to
@@ -91,6 +103,11 @@ class ImagePanel extends JPanel{
      */
     public BufferedImage getImage(){
         return image;
+    }
+    
+    public void setImage(BufferedImage imagen){
+        this.image = image;
+        this.repaint();
     }
     
     @Override
