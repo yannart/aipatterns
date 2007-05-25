@@ -38,6 +38,8 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItemAbrir = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JSeparator();
         jMenuItemSalir = new javax.swing.JMenuItem();
+        jMenuImagen = new javax.swing.JMenu();
+        jMenuItemFiltrar = new javax.swing.JMenuItem();
         jMenuAyuda = new javax.swing.JMenu();
         jMenuItemAbout = new javax.swing.JMenuItem();
 
@@ -69,6 +71,18 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuArchivo);
 
+        jMenuImagen.setText("Imagen");
+
+        jMenuItemFiltrar.setText("Aplicar filtro");
+        jMenuItemFiltrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jMenuItemFiltrarMousePressed(evt);
+            }
+        });
+        jMenuImagen.add(jMenuItemFiltrar);
+
+        jMenuBar1.add(jMenuImagen);
+
         jMenuAyuda.setText("Ayuda");
 
         jMenuItemAbout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/foco.png"))); // NOI18N
@@ -98,6 +112,11 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+private void jMenuItemFiltrarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemFiltrarMousePressed
+    FiltroDialog filtrodlg = new FiltroDialog(this, true);
+    filtrodlg.setVisible(true);
+}//GEN-LAST:event_jMenuItemFiltrarMousePressed
+
 private void jMenuItemAboutMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemAboutMousePressed
             EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -124,8 +143,10 @@ private void jMenuItemSalirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FI
     private javax.swing.JMenu jMenuArchivo;
     private javax.swing.JMenu jMenuAyuda;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenuImagen;
     private javax.swing.JMenuItem jMenuItemAbout;
     private javax.swing.JMenuItem jMenuItemAbrir;
+    private javax.swing.JMenuItem jMenuItemFiltrar;
     private javax.swing.JMenuItem jMenuItemSalir;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
