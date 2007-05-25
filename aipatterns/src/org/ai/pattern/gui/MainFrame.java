@@ -7,15 +7,18 @@
 package org.ai.pattern.gui;
 
 import java.awt.EventQueue;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.swing.JFileChooser;
+import org.ai.pattern.Filtrable;
+import org.ai.pattern.Filtro;
 import org.ai.pattern.gui.ImageFrame;
 
 /**
  *
  * @author  yannart
  */
-public class MainFrame extends javax.swing.JFrame {
+public class MainFrame extends javax.swing.JFrame implements Filtrable{
     
     JFileChooser filechooser = new JpgFileChooser();
     
@@ -111,20 +114,52 @@ public class MainFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    
+    public void filtrar(float[] matriz){
+        BufferedImage bufferedImage = getImagenActual();
+        if(bufferedImage != null){
+            Filtro filtro = new Filtro(this);
+            filtro.filtrar(bufferedImage, matriz);
+        }
+    }
+    
+    public void imagenFiltrada(BufferedImage image){
+        if(image != null){
+            setImagenActual(image);
+        }
+    }
+    
+    
+    public BufferedImage getImagenActual(){
+        ImageFrame selectedframe = (ImageFrame) jDesktopPane.getSelectedFrame();
+        if(selectedframe == null){
+            return null;
+        }
+        
+        return selectedframe.getImage();
+    }
+    
+    public void setImagenActual(BufferedImage imagen){
+        ImageFrame selectedframe = (ImageFrame) jDesktopPane.getSelectedFrame();
+        if(selectedframe != null){
+            selectedframe.setImage(imagen);
+        }
+    }
+    
 private void jMenuItemFiltrarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemFiltrarMousePressed
     FiltroDialog filtrodlg = new FiltroDialog(this, true);
     filtrodlg.setVisible(true);
 }//GEN-LAST:event_jMenuItemFiltrarMousePressed
 
 private void jMenuItemAboutMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemAboutMousePressed
-            EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                (new AcercaDe(MainFrame.this, true)).setVisible(true);
-            }
-        });
+    EventQueue.invokeLater(new Runnable() {
+        public void run() {
+            (new AcercaDe(MainFrame.this, true)).setVisible(true);
+        }
+    });
 }//GEN-LAST:event_jMenuItemAboutMousePressed
-    
+
 private void jMenuItemAbrirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemAbrirMousePressed
     int returnVal = filechooser.showOpenDialog(this);
     
