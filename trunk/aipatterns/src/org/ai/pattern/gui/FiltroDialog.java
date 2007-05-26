@@ -86,8 +86,6 @@ public class FiltroDialog extends javax.swing.JDialog {
         jButtonCancelar = new javax.swing.JButton();
         jPanelMatrizData = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
         jPanelTamano.setBorder(javax.swing.BorderFactory.createTitledBorder("Tamano matriz"));
 
         jComboBoxTamano.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "3 * 3", "5 * 5" }));
@@ -162,7 +160,7 @@ public class FiltroDialog extends javax.swing.JDialog {
         );
         jPanelMatrizDataLayout.setVerticalGroup(
             jPanelMatrizDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 203, Short.MAX_VALUE)
+            .addGap(0, 205, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
