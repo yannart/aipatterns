@@ -20,6 +20,7 @@ import org.ai.pattern.ImageLoader;
 public class ImageFrame extends javax.swing.JInternalFrame {
     
     private ImagePanel imagepanel;
+    private int umbral = 127;
     
     /** Creates new form ImageFrame
      * @param file
@@ -43,6 +44,14 @@ public class ImageFrame extends javax.swing.JInternalFrame {
     
     public void setImage(BufferedImage image){
         imagepanel.setImage(image);
+    }
+    
+    public int getUmbral() {
+        return umbral;
+    }
+    
+    public void setUmbral(int umbral) {
+        this.umbral = umbral;
     }
     
     /** This method is called from within the constructor to

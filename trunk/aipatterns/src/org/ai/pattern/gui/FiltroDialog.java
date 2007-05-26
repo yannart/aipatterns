@@ -212,12 +212,12 @@ public class FiltroDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
     
 private void jButtonAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAceptarMouseClicked
+    setVisible(false);
     transform();
-    this.setVisible(false);
 }//GEN-LAST:event_jButtonAceptarMouseClicked
 
 private void jButtonCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelarMouseClicked
-    this.setVisible(false);
+    setVisible(false);
 }//GEN-LAST:event_jButtonCancelarMouseClicked
 
 private void jComboBoxPredeterminadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxPredeterminadosActionPerformed
