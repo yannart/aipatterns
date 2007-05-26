@@ -193,7 +193,7 @@ public void verHistograma(int[] valores, int maxnum){
         histogramadlg = new HistogramaDialog(this, true);
     }
     
-    histogramadlg.setValues(valores, maxnum);
+    histogramadlg.setValues(valores, maxnum, getUmbralActual());
     
     this.pausar(false);
     
@@ -220,7 +220,7 @@ public void imagenFiltrada(BufferedImage image){
     }
 }
 
-private int getUmbralActual(){
+public int getUmbralActual(){
     if(getSelectedFrame() == null){
         showErrorAlert();
         return -1;
@@ -229,7 +229,7 @@ private int getUmbralActual(){
     return getSelectedFrame().getUmbral();
 }
 
-private void setUmbralActual(int umbral){
+public void setUmbralActual(int umbral){
     if(getSelectedFrame() != null){
         getSelectedFrame().setUmbral(umbral);
     }
