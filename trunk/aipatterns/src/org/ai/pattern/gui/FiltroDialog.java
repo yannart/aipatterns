@@ -59,7 +59,10 @@ public class FiltroDialog extends javax.swing.JDialog {
     };
     
     
-    /** Creates new form FiltroDialog */
+    /** Creates new form FiltroDialog 
+     * @param parent 
+     * @param modal 
+     */
     public FiltroDialog(MainFrame parent, boolean modal) {
         super(parent, modal);
         this.parent = parent;
@@ -211,12 +214,10 @@ public class FiltroDialog extends javax.swing.JDialog {
 private void jButtonAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAceptarMouseClicked
     transform();
     this.setVisible(false);
-    this.dispose();
 }//GEN-LAST:event_jButtonAceptarMouseClicked
 
 private void jButtonCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelarMouseClicked
     this.setVisible(false);
-    this.dispose();
 }//GEN-LAST:event_jButtonCancelarMouseClicked
 
 private void jComboBoxPredeterminadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxPredeterminadosActionPerformed
