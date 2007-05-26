@@ -13,6 +13,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -233,12 +234,21 @@ class GlassPane extends JPanel implements MouseListener, Runnable{
     private int numimagen;
     private Thread thread;
     private int imageX, imageY, w, h;
+    private MediaTracker tracker;
     
     public GlassPane() {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         imagenes = new Image[8];
+        
+        tracker = new MediaTracker(this);
+        
         for(int i = 0; i < 8; i++){
             imagenes[i] = toolkit.getImage(getClass().getResource("/imagenes/indicador" + (i + 1) + ".png"));
+            tracker.addImage(imagenes[i], 0);
+        }
+        
+        while(tracker.statusID(0, true) != MediaTracker.COMPLETE){
+            //se espera0
         }
         thread = new Thread(this);
     }
