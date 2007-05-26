@@ -11,8 +11,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import org.ai.pattern.Filtrable;
 import org.ai.pattern.Filtro;
+import org.ai.pattern.Umbral;
 import org.ai.pattern.gui.ImageFrame;
 
 /**
@@ -24,7 +26,9 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
     JFileChooser filechooser = new JpgFileChooser();
     GlassPanelEspera glass;
     Filtro filtro;
+    Umbral umbral;
     FiltroDialog filtrodlg;
+    UmbralDialog umbraldlg;
     
     /** Creates new form MainFrame */
     public MainFrame() {
@@ -129,61 +133,108 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
 private void jMenuItemUmbralizarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemUmbralizarMousePressed
-    // TODO add your handling code here:
+    if(getSelectedFrame() == null){
+        showErrorAlert();
+        return;
+    }
+    
+    if(umbraldlg == null){
+        umbraldlg = new UmbralDialog(this, true);
+    }
+    umbraldlg.setUmbral(getUmbralActual());
+    umbraldlg.setVisible(true);
 }//GEN-LAST:event_jMenuItemUmbralizarMousePressed
-    
-    
-    public void filtrar(float[] matriz){
-        if(filtro == null){
-            filtro = new Filtro(this);
-        }
-        
-        BufferedImage bufferedImage = getImagenActual();
-        if(bufferedImage != null){
-            this.pausar(true);
-            filtro.filtrar(bufferedImage, matriz);
-        }
+
+
+public void filtrar(float[] matriz){
+    if(filtro == null){
+        filtro = new Filtro(this);
     }
     
-    public void imagenFiltrada(BufferedImage image){
-        pausar(false);
-        if(image != null){
-            setImagenActual(image);
-        }
+    BufferedImage bufferedImage = getImagenActual();
+    if(bufferedImage != null){
+        this.pausar(true);
+        filtro.filtrar(bufferedImage, matriz);
+    }
+}
+
+public void umbralizar(int umbral_val){
+    if(umbral == null){
+        umbral = new Umbral(this);
     }
     
-    public BufferedImage getImagenActual(){
-        ImageFrame selectedframe = (ImageFrame) jDesktopPane.getSelectedFrame();
-        if(selectedframe == null){
-            return null;
-        }
-        
-        return selectedframe.getImage();
+    BufferedImage bufferedImage = getImagenActual();
+    if(bufferedImage != null){
+        setUmbralActual(umbral_val);
+        this.pausar(true);
+        umbral.umbralizar(bufferedImage, umbral_val);
+    }
+}
+
+public void imagenFiltrada(BufferedImage image){
+    pausar(false);
+    if(image != null){
+        setImagenActual(image);
+    }
+}
+
+private int getUmbralActual(){
+    if(getSelectedFrame() == null){
+        showErrorAlert();
+        return -1;
     }
     
-    public void setImagenActual(BufferedImage imagen){
-        ImageFrame selectedframe = (ImageFrame) jDesktopPane.getSelectedFrame();
-        if(selectedframe != null){
-            selectedframe.setImage(imagen);
-        }
+    return getSelectedFrame().getUmbral();
+}
+
+private void setUmbralActual(int umbral){
+    if(getSelectedFrame() != null){
+        getSelectedFrame().setUmbral(umbral);
     }
-    
-    public void pausar(final boolean enpausa){
-        if(enpausa){
-            glass.setGlassPane(MainFrame.this);
-            glass.setDrawing(true);
-        }else{
-            glass.removeGlassPane();
-        }
+}
+
+public BufferedImage getImagenActual(){
+    if(getSelectedFrame() == null){
+        showErrorAlert();
+        return null;
     }
-    
+    return getSelectedFrame().getImage();
+}
+
+public void setImagenActual(BufferedImage imagen){
+    if(getSelectedFrame() != null){
+        getSelectedFrame().setImage(imagen);
+    }
+}
+
+private ImageFrame getSelectedFrame(){
+    return (ImageFrame) jDesktopPane.getSelectedFrame();
+}
+
+public void pausar(final boolean enpausa){
+    if(enpausa){
+        glass.setGlassPane(MainFrame.this);
+        glass.setDrawing(true);
+    }else{
+        glass.removeGlassPane();
+    }
+}
+
+private void showErrorAlert(){
+    JOptionPane.showMessageDialog(this,"No puede ejecutar esta accion sin seleccionar una imagen","Error", JOptionPane.ERROR_MESSAGE);
+}
+
 private void jMenuItemFiltrarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemFiltrarMousePressed
+    if(getSelectedFrame() == null){
+        showErrorAlert();
+        return;
+    }
+    
     if(filtrodlg == null){
         filtrodlg = new FiltroDialog(this, true);
     }
-    
     filtrodlg.setVisible(true);
 }//GEN-LAST:event_jMenuItemFiltrarMousePressed
 
