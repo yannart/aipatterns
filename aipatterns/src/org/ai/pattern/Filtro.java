@@ -1,8 +1,8 @@
 /*
  * Filtro.java
- * 
+ *
  * Created on 25 mai 2007, 15:58:42
- * 
+ *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
@@ -10,39 +10,37 @@
 package org.ai.pattern;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-import java.awt.image.ConvolveOp;
-import java.awt.image.Kernel;
 
 /**
  *
  * @author yannart
  */
 public class Filtro implements Runnable{
-
+    
     private BufferedImage imagen;
     private float[] matriz;
     private Filtrable parent;
+    private Thread thread;
     
     public Filtro(Filtrable parent){
         this.parent = parent;
     }
     
     public synchronized void filtrar(BufferedImage imagen, float[] matriz){
-            this.imagen = imagen;
-            this.matriz = matriz;
-            if(imagen == null){
-                return;
-            }
-            
-            Thread thread = new Thread(this);
-            thread.start();
+        this.imagen = imagen;
+        this.matriz = matriz;
+        if(imagen == null){
+            parent.imagenFiltrada(null);
+        }
+        
+        thread = new Thread(this);
+        thread.start();
     }
     
     public void run() {
-        int lado_matriz = (int) Math.sqrt(matriz.length);
-        BufferedImageOp op = new ConvolveOp(new Kernel(lado_matriz, lado_matriz, matriz));
-        BufferedImage nuevaImagen = op.filter(imagen, null);
+        int lado_matriz = (int) java.lang.Math.sqrt(matriz.length);
+        java.awt.image.BufferedImageOp op = new java.awt.image.ConvolveOp(new java.awt.image.Kernel(lado_matriz, lado_matriz, matriz));
+        java.awt.image.BufferedImage nuevaImagen = op.filter(imagen, null);
         parent.imagenFiltrada(nuevaImagen);
     }
 }
