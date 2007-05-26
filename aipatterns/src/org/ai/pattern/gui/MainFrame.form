@@ -48,6 +48,14 @@
                 <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenuItemFiltrarMousePressed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemHistograma">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ver Histograma"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenuItemHistogramaMousePressed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemUmbralizar">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Umbralizar"/>

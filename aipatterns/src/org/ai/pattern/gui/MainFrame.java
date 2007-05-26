@@ -14,6 +14,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import org.ai.pattern.Filtrable;
 import org.ai.pattern.Filtro;
+import org.ai.pattern.Histograma;
 import org.ai.pattern.Umbral;
 import org.ai.pattern.gui.ImageFrame;
 
@@ -27,8 +28,10 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
     GlassPanelEspera glass;
     Filtro filtro;
     Umbral umbral;
+    Histograma histograma;
     FiltroDialog filtrodlg;
     UmbralDialog umbraldlg;
+    HistogramaDialog histogramadlg;
     
     /** Creates new form MainFrame */
     public MainFrame() {
@@ -53,6 +56,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuItemSalir = new javax.swing.JMenuItem();
         jMenuImagen = new javax.swing.JMenu();
         jMenuItemFiltrar = new javax.swing.JMenuItem();
+        jMenuItemHistograma = new javax.swing.JMenuItem();
         jMenuItemUmbralizar = new javax.swing.JMenuItem();
         jMenuAyuda = new javax.swing.JMenu();
         jMenuItemAbout = new javax.swing.JMenuItem();
@@ -95,6 +99,14 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         });
         jMenuImagen.add(jMenuItemFiltrar);
 
+        jMenuItemHistograma.setText("Ver Histograma");
+        jMenuItemHistograma.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jMenuItemHistogramaMousePressed(evt);
+            }
+        });
+        jMenuImagen.add(jMenuItemHistograma);
+
         jMenuItemUmbralizar.setText("Umbralizar");
         jMenuItemUmbralizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -134,6 +146,22 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
+private void jMenuItemHistogramaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemHistogramaMousePressed
+    if(getSelectedFrame() == null){
+        showErrorAlert();
+        return;
+    }
+    
+    if(histograma == null){
+        histograma = new Histograma(this);
+    }
+    BufferedImage imagen = getImagenActual();
+    if(imagen != null){
+        this.pausar(true);
+        histograma.crearHistograma(imagen);
+    }
+}//GEN-LAST:event_jMenuItemHistogramaMousePressed
+
 private void jMenuItemUmbralizarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemUmbralizarMousePressed
     if(getSelectedFrame() == null){
         showErrorAlert();
@@ -158,6 +186,18 @@ public void filtrar(float[] matriz){
         this.pausar(true);
         filtro.filtrar(bufferedImage, matriz);
     }
+}
+
+public void verHistograma(int[] valores, int maxnum){
+    if(histogramadlg == null){
+        histogramadlg = new HistogramaDialog(this, true);
+    }
+    
+    histogramadlg.setValues(valores, maxnum);
+    
+    this.pausar(false);
+    
+    histogramadlg.setVisible(true);
 }
 
 public void umbralizar(int umbral_val){
@@ -270,6 +310,7 @@ private void jMenuItemSalirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FI
     private javax.swing.JMenuItem jMenuItemAbout;
     private javax.swing.JMenuItem jMenuItemAbrir;
     private javax.swing.JMenuItem jMenuItemFiltrar;
+    private javax.swing.JMenuItem jMenuItemHistograma;
     private javax.swing.JMenuItem jMenuItemSalir;
     private javax.swing.JMenuItem jMenuItemUmbralizar;
     private javax.swing.JSeparator jSeparator1;
