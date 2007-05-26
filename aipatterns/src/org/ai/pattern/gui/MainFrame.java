@@ -188,7 +188,7 @@ public void filtrar(float[] matriz){
     }
 }
 
-public void verHistograma(int[] valores, int maxnum){
+public void verHistograma(long[] valores, long maxnum){
     if(histogramadlg == null){
         histogramadlg = new HistogramaDialog(this, true);
     }
