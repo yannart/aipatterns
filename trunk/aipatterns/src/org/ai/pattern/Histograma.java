@@ -37,7 +37,7 @@ public class Histograma implements Runnable{
         System.gc();
         int w = imagen.getWidth();
         int h = imagen.getHeight();
-        int[] valores = new int[256];
+        long[] valores = new long[256];
         
         int gris;
         int pixel;
@@ -50,7 +50,7 @@ public class Histograma implements Runnable{
         }
         imagen = null;
         
-        int maxnum = 0;
+        long maxnum = 0;
         for(int i = 0; i< valores.length; i++){
             if(valores[i] > maxnum){
                 maxnum = valores[i];

@@ -11,6 +11,7 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
+import org.ai.pattern.UmbralFinder;
 
 /**
  *
@@ -20,6 +21,7 @@ public class HistogramaDialog extends javax.swing.JDialog {
     
     private HistogramaPanel histograma;
     private MainFrame parent;
+    private long [] values;
     /** Creates new form HistogramaDialog */
     public HistogramaDialog(MainFrame parent, boolean modal) {
         super(parent, modal);
@@ -29,8 +31,14 @@ public class HistogramaDialog extends javax.swing.JDialog {
         jPanelHistogramaData.add(histograma);
     }
     
-    public void setValues(int[] values, int maxnum, int umbral) {
+    public void setValues(long[] values, long maxnum, int umbral) {
+        this.values = values;
         histograma.setValues(values, maxnum);
+        setUmbral(umbral);
+        
+    }
+    
+    private void setUmbral(int umbral){
         jSliderUmbral.setValue(umbral);
         jSpinnerUmbral.setValue(umbral);
         histograma.setUmbral(umbral);
@@ -150,7 +158,7 @@ public class HistogramaDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
 private void jButtonCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelarMouseClicked
     this.setVisible(false);
 }//GEN-LAST:event_jButtonCancelarMouseClicked
@@ -161,7 +169,8 @@ private void jButtonAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FI
 }//GEN-LAST:event_jButtonAceptarMouseClicked
 
 private void jButtonDetectarUmbralMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonDetectarUmbralMouseClicked
-    // TODO add your handling code here:
+    int umbral = UmbralFinder.getUmbral(values, UmbralFinder.ISODATA_ALGORITHM);
+    setUmbral(umbral);
 }//GEN-LAST:event_jButtonDetectarUmbralMouseClicked
 
 private void jSpinnerUmbralStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerUmbralStateChanged
@@ -170,13 +179,13 @@ private void jSpinnerUmbralStateChanged(javax.swing.event.ChangeEvent evt) {//GE
     jSliderUmbral.setValue(valor);
     histograma.setUmbral(valor);
 }//GEN-LAST:event_jSpinnerUmbralStateChanged
-    
+
 private void jSliderUmbralStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSliderUmbralStateChanged
     JSlider source = (JSlider)evt.getSource();
     //if (!source.getValueIsAdjusting()) {
-        int valor = source.getValue();
-        jSpinnerUmbral.setValue(valor);
-        histograma.setUmbral(valor);
+    int valor = source.getValue();
+    jSpinnerUmbral.setValue(valor);
+    histograma.setUmbral(valor);
     //}
 }//GEN-LAST:event_jSliderUmbralStateChanged
 
@@ -196,11 +205,11 @@ private void jSliderUmbralStateChanged(javax.swing.event.ChangeEvent evt) {//GEN
 
 class HistogramaPanel extends JPanel{
     
-    private int[] values;
-    private int maxnum;
+    private long[] values;
+    private long maxnum;
     private int umbral;
     
-    public void setValues(int[] values, int maxnum) {
+    public void setValues(long[] values, long maxnum) {
         this.values = values;
         this.maxnum = maxnum;
     }
@@ -218,7 +227,7 @@ class HistogramaPanel extends JPanel{
         g.setColor(Color.BLACK);
         for(int i = 0; i < values.length; i++){
             xpos = i * 2;
-            ypos = h - (values[i] * h / maxnum);
+            ypos = (int)(h - (values[i] * h / maxnum));
             g.setColor(Color.BLACK);
             g.drawLine(xpos, h, xpos, ypos);
             g.drawLine(xpos + 1, h, xpos + 1, ypos);
