@@ -1,8 +1,8 @@
 /*
  * GlassPane.java
- * 
+ *
  * Created on 25 mai 2007, 21:07:04
- * 
+ *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
@@ -41,7 +41,6 @@ public class GlassPanelEspera extends JPanel implements MouseListener, Runnable{
     public GlassPanelEspera() {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         imagenes = new Image[8];
-        
         tracker = new MediaTracker(this);
         
         for(int i = 0; i < 8; i++){
@@ -49,8 +48,10 @@ public class GlassPanelEspera extends JPanel implements MouseListener, Runnable{
             tracker.addImage(imagenes[i], 0);
         }
         
-        while(tracker.statusID(0, true) != MediaTracker.COMPLETE){
-            //se espera0
+        try {
+            tracker.waitForAll();
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
         }
         thread = new Thread(this);
     }
