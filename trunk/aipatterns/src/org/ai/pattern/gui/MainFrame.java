@@ -91,6 +91,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
 
         jMenuImagen.setText("Imagen");
 
+        jMenuItemFiltrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/login-photo.png"))); // NOI18N
         jMenuItemFiltrar.setText("Aplicar filtro");
         jMenuItemFiltrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -99,6 +100,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         });
         jMenuImagen.add(jMenuItemFiltrar);
 
+        jMenuItemHistograma.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/histograma.png"))); // NOI18N
         jMenuItemHistograma.setText("Ver Histograma");
         jMenuItemHistograma.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -107,6 +109,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         });
         jMenuImagen.add(jMenuItemHistograma);
 
+        jMenuItemUmbralizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/umbralizar.png"))); // NOI18N
         jMenuItemUmbralizar.setText("Umbralizar");
         jMenuItemUmbralizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
