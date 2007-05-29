@@ -66,6 +66,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
 
         jDesktopPane.setBackground(new java.awt.Color(147, 191, 237));
 
+        jMenuArchivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/system-file-manager.png"))); // NOI18N
         jMenuArchivo.setText("Archivo");
 
         jMenuItemAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/abrir.png"))); // NOI18N
@@ -89,9 +90,10 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
 
         jMenuBar1.add(jMenuArchivo);
 
+        jMenuImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/imagen.png"))); // NOI18N
         jMenuImagen.setText("Imagen");
 
-        jMenuItemFiltrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/login-photo.png"))); // NOI18N
+        jMenuItemFiltrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/draw_pencil.png"))); // NOI18N
         jMenuItemFiltrar.setText("Aplicar filtro");
         jMenuItemFiltrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -120,6 +122,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
 
         jMenuBar1.add(jMenuImagen);
 
+        jMenuAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/help.png"))); // NOI18N
         jMenuAyuda.setText("Ayuda");
 
         jMenuItemAbout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/foco.png"))); // NOI18N
@@ -139,11 +142,11 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE)
+            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 768, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
+            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
         );
 
         pack();

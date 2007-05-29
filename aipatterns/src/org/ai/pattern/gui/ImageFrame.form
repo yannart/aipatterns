@@ -30,12 +30,12 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jScrollPaneContenedor" alignment="0" pref="355" max="32767" attributes="0"/>
+          <Component id="jScrollPaneContenedor" alignment="0" pref="579" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jScrollPaneContenedor" alignment="0" pref="238" max="32767" attributes="0"/>
+          <Component id="jScrollPaneContenedor" alignment="0" pref="396" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
