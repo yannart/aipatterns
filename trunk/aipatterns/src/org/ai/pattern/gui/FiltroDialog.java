@@ -31,17 +31,17 @@ public class FiltroDialog extends javax.swing.JDialog {
     private JPanel matriz5;
     
     private static final float [] pasobajo3 = {
-        1.0f/9.0f, 1.0f/9.0f, 1.0f/9.0f,
-        1.0f/9.0f, 1.0f/9.0f, 1.0f/9.0f,
-        1.0f/9.0f, 1.0f/9.0f, 1.0f/9.0f
+        0.111f, 0.111f, 0.111f,
+        0.111f, 0.111f, 0.111f,
+        0.111f, 0.111f, 0.111f
     };
     
     private static final float [] pasobajo5 = {
-        1f/25f, 1f/25f, 1f/25f, 1f/25f, 1f/25f,
-        1f/25f, 1f/25f, 1f/25f, 1f/25f, 1f/25f,
-        1f/25f, 1f/25f, 1f/25f, 1f/25f, 1f/25f,
-        1f/25f, 1f/25f, 1f/25f, 1f/25f, 1f/25f,
-        1f/25f, 1f/25f, 1f/25f, 1f/25f, 1f/25f,
+        0.04f, 0.04f, 0.04f, 0.04f, 0.04f,
+        0.04f, 0.04f, 0.04f, 0.04f, 0.04f,
+        0.04f, 0.04f, 0.04f, 0.04f, 0.04f,
+        0.04f, 0.04f, 0.04f, 0.04f, 0.04f,
+        0.04f, 0.04f, 0.04f, 0.04f, 0.04f
     };
     
     private static final float [] pasoalto3 = {
