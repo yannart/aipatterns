@@ -86,6 +86,8 @@ public class FiltroDialog extends javax.swing.JDialog {
         jButtonCancelar = new javax.swing.JButton();
         jPanelMatrizData = new javax.swing.JPanel();
 
+        setTitle("Filtrar imagen");
+
         jPanelTamano.setBorder(javax.swing.BorderFactory.createTitledBorder("Tamano matriz"));
 
         jComboBoxTamano.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "3 * 3", "5 * 5" }));

@@ -34,6 +34,8 @@ public class UmbralDialog extends javax.swing.JDialog {
         jButtonAceptar = new javax.swing.JButton();
         jButtonCancelar = new javax.swing.JButton();
 
+        setTitle("Umbralizar imagen");
+
         jPanelUmbral.setBorder(javax.swing.BorderFactory.createTitledBorder("Umbral"));
 
         jSpinnerUmbral.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
@@ -52,7 +54,7 @@ public class UmbralDialog extends javax.swing.JDialog {
             .addGroup(jPanelUmbralLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jSpinnerUmbral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jButtonAceptar.setText("Aceptar");
