@@ -6,6 +6,9 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="jMenuArchivo">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/imagenes/system-file-manager.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Archivo"/>
           </Properties>
           <SubComponents>
@@ -37,13 +40,16 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenuImagen">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/imagenes/imagen.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Imagen"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemFiltrar">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/imagenes/login-photo.png"/>
+                  <Image iconType="3" name="/imagenes/draw_pencil.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Aplicar filtro"/>
               </Properties>
@@ -77,6 +83,9 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenuAyuda">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/imagenes/help.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Ayuda"/>
           </Properties>
           <SubComponents>
@@ -117,12 +126,12 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jDesktopPane" alignment="0" pref="615" max="32767" attributes="0"/>
+          <Component id="jDesktopPane" alignment="0" pref="768" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jDesktopPane" alignment="0" pref="364" max="32767" attributes="0"/>
+          <Component id="jDesktopPane" alignment="0" pref="468" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
