@@ -8,7 +8,7 @@ package org.ai.pattern.gui;
 
 /**
  *
- * @author  yannart
+ * @author  yannart,armando
  */
 public class AcercaDe extends javax.swing.JDialog {
     
