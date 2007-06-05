@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import org.ai.pattern.Filtrable;
 import org.ai.pattern.Filtro;
 import org.ai.pattern.Histograma;
+import org.ai.pattern.Regiones;
 import org.ai.pattern.Umbral;
 import org.ai.pattern.gui.ImageFrame;
 
@@ -29,6 +30,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
     Filtro filtro;
     Umbral umbral;
     Histograma histograma;
+    Regiones regiones;
     FiltroDialog filtrodlg;
     UmbralDialog umbraldlg;
     HistogramaDialog histogramadlg;
@@ -58,6 +60,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuItemFiltrar = new javax.swing.JMenuItem();
         jMenuItemHistograma = new javax.swing.JMenuItem();
         jMenuItemUmbralizar = new javax.swing.JMenuItem();
+        jMenuItemRegionalizar = new javax.swing.JMenuItem();
         jMenuAyuda = new javax.swing.JMenu();
         jMenuItemAbout = new javax.swing.JMenuItem();
 
@@ -120,6 +123,14 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         });
         jMenuImagen.add(jMenuItemUmbralizar);
 
+        jMenuItemRegionalizar.setText("Regionalizar");
+        jMenuItemRegionalizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jMenuItemRegionalizarMousePressed(evt);
+            }
+        });
+        jMenuImagen.add(jMenuItemRegionalizar);
+
         jMenuBar1.add(jMenuImagen);
 
         jMenuAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/help.png"))); // NOI18N
@@ -152,6 +163,22 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
+private void jMenuItemRegionalizarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemRegionalizarMousePressed
+    if(getSelectedFrame() == null){
+        showErrorAlert();
+        return;
+    }
+    
+    if(regiones == null){
+        regiones = new Regiones(this);
+    }
+    BufferedImage imagen = getImagenActual();
+    if(imagen != null){
+        this.pausar(true);
+        regiones.regionalizar(imagen);
+    }
+}//GEN-LAST:event_jMenuItemRegionalizarMousePressed
+
 private void jMenuItemHistogramaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemHistogramaMousePressed
     if(getSelectedFrame() == null){
         showErrorAlert();
@@ -317,6 +344,7 @@ private void jMenuItemSalirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FI
     private javax.swing.JMenuItem jMenuItemAbrir;
     private javax.swing.JMenuItem jMenuItemFiltrar;
     private javax.swing.JMenuItem jMenuItemHistograma;
+    private javax.swing.JMenuItem jMenuItemRegionalizar;
     private javax.swing.JMenuItem jMenuItemSalir;
     private javax.swing.JMenuItem jMenuItemUmbralizar;
     private javax.swing.JSeparator jSeparator1;
