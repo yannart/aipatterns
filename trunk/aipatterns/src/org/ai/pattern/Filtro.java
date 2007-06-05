@@ -38,14 +38,13 @@ public class Filtro implements Runnable{
     }
     
     public void run() {
-        System.gc();
         int lado_matriz = (int) java.lang.Math.sqrt(matriz.length);
         java.awt.image.BufferedImageOp op = new java.awt.image.ConvolveOp(new java.awt.image.Kernel(lado_matriz, lado_matriz, matriz));
         java.awt.image.BufferedImage nuevaImagen = op.filter(imagen, null);
         
         imagen.flush();
         imagen = null;
-        
+        System.gc();
         parent.imagenFiltrada(nuevaImagen);
     }
 }

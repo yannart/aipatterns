@@ -42,7 +42,6 @@ public class Umbral implements Runnable{
     }
     
     public void run() {
-        System.gc();
         int w = imagen.getWidth();
         int h = imagen.getHeight();
         BufferedImage newimagen = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
@@ -64,7 +63,7 @@ public class Umbral implements Runnable{
         
         imagen.flush();
         imagen = null;
-        
+        System.gc();
         parent.imagenFiltrada(newimagen);
     }
 }
