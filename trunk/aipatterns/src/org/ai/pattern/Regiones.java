@@ -40,9 +40,9 @@ public class Regiones implements Runnable{
         for(int i = 0; i < w; i++){
             for(int j =0; j < h; j++){
                 if(i > 0){
-                    t = imagen.getRGB(i - 1, j) & 0x00FFFFFF;
+                    t = newimagen.getRGB(i - 1, j) & 0x00FFFFFF;
                     if(j > 0){
-                        s = imagen.getRGB(i - 1, j - 1) & 0x00FFFFFF;
+                        s = newimagen.getRGB(i - 1, j - 1) & 0x00FFFFFF;
                     }else{
                         s = 0;
                     }
@@ -51,7 +51,7 @@ public class Regiones implements Runnable{
                     t = 0;
                 }
                 if(j > 0){
-                    r = imagen.getRGB(i, j - 1) & 0x00FFFFFF;
+                    r = newimagen.getRGB(i, j - 1) & 0x00FFFFFF;
                 }else{
                     r = 0;
                 }
@@ -75,11 +75,6 @@ public class Regiones implements Runnable{
                 newimagen.setRGB(i, j, pixel);
             }
         }
-        newimagen.setRGB(0, 0, 0xFFFF0000);
-        newimagen.setRGB(0, 1, 0xFFFF0000);
-        newimagen.setRGB(1, 0, 0xFFFF0000);
-        newimagen.setRGB(1, 1, 0xFFFF0000);
-        
         imagen.flush();
         imagen = null;
         System.gc();
