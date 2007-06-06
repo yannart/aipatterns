@@ -2,6 +2,7 @@
 package org.ai.pattern;
 
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 /**
  *
@@ -97,8 +98,9 @@ public class Regiones implements Runnable{
          *      x  P  t
          *      x  x  x
          */
+        Random generator = new Random();
         int pintado[] = new int [colores];
-        int newcolor = 1000;
+        int newcolor = 5000;
         for(int y = 0; y < h; y++){
             for(int x = 0; x < w; x++){
                 
@@ -109,11 +111,13 @@ public class Regiones implements Runnable{
                 }
                 pixel = rgbs[y * w + x];
                 if(pixel != 0){
-                    if(pintado[t] != 0 && t != pixel){
+                    if(pintado[t] != 0 && pixel != t){
                         pintado[pixel] = pintado[t];
                     }else{
-                        pintado[pixel] = newcolor;
-                        newcolor+= 500;
+                        if(pintado[pixel] == 0){
+                            pintado[pixel] = newcolor;
+                            newcolor = (generator.nextInt(255) << 16) + (generator.nextInt(255) << 8) + generator.nextInt(255);
+                        }
                     }
                 }
             }
