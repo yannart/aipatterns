@@ -31,18 +31,25 @@ public class Regiones implements Runnable{
     public void run() {
         int w = imagen.getWidth();
         int h = imagen.getHeight();
-        BufferedImage newimagen = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        int[] rgbs = new int[w*h];
+        imagen.getRGB(0,0,w,h,rgbs,0,w);
         
-        int colores = 1000;
+        int colores = 1;
         int pixel;
-        int r = 0, s = 0, t = 0;
+        int r = 0, s = 0, t = 0, u = 0;
         
-        for(int i = 0; i < w; i++){
-            for(int j =0; j < h; j++){
-                if(i > 0){
-                    t = newimagen.getRGB(i - 1, j) & 0x00FFFFFF;
-                    if(j > 0){
-                        s = newimagen.getRGB(i - 1, j - 1) & 0x00FFFFFF;
+        /* Posicion de los pixeles:
+         *      s  r  u
+         *      t  P  x
+         *      x  x  x
+         */
+        for(int y = 0; y < h; y++){
+            for(int x =0; x < w; x++){
+                
+                if(x > 0){
+                    t = rgbs[y * w + (x - 1)] & 0x00FFFFFF;
+                    if(y > 0){
+                        s = rgbs[(y - 1)* w + (x - 1)] & 0x00FFFFFF;
                     }else{
                         s = 0;
                     }
@@ -50,35 +57,77 @@ public class Regiones implements Runnable{
                     s = 0;
                     t = 0;
                 }
-                if(j > 0){
-                    r = newimagen.getRGB(i, j - 1) & 0x00FFFFFF;
+                
+                if(y > 0){
+                    r = rgbs[(y - 1)* w + x] & 0x00FFFFFF;
+                    if(x != w - 1){
+                        u = rgbs[(y - 1)* w + (x + 1)] & 0x00FFFFFF;
+                    }else{
+                        u = 0;
+                    }
                 }else{
                     r = 0;
+                    u = 0;
                 }
-                pixel = imagen.getRGB(i, j) & 0x00FFFFFF;
+                pixel = imagen.getRGB(x,y) & 0x00FFFFFF;
                 
-                //System.out.println("s: " + s + " r: " + r + " t: " + t);
+                //System.out.println("s: " + s + " r: " + r + " t: " + t + " u:" + u);
                 
                 if(pixel != 0){
                     if(s != 0){
                         pixel = s;
                     }else if(r != 0){
                         pixel = r;
+                    }else if(u != 0){
+                        pixel = u;
                     }else if(t != 0){
                         pixel = t;
                     }else{
                         pixel = colores;
-                        colores+= 1000;
+                        colores++;
                     }
                 }
-                
-                newimagen.setRGB(i, j, pixel);
+                rgbs[y * w + x] = pixel;
             }
         }
-        imagen.flush();
-        imagen = null;
-        System.gc();
-        parent.imagenFiltrada(newimagen);
+        
+        //Segunda pasada:
+        /* Posicion de los pixeles:
+         *      x  x  x
+         *      x  P  t
+         *      x  x  x
+         */
+        int pintado[] = new int [colores];
+        int newcolor = 1000;
+        for(int y = 0; y < h; y++){
+            for(int x = 0; x < w; x++){
+                
+                if(x != w - 1){
+                    t = rgbs[y * w + (x + 1)];
+                }else{
+                    t = 0;
+                }
+                pixel = rgbs[y * w + x];
+                if(pixel != 0){
+                    if(pintado[t] != 0 && t != pixel){
+                        pintado[pixel] = pintado[t];
+                    }else{
+                        pintado[pixel] = newcolor;
+                        newcolor+= 500;
+                    }
+                }
+            }
+        }
+        
+        for(int y = 0; y < h; y++){
+            for(int x = 0; x < w; x++){
+                pixel = rgbs[y * w + x];
+                rgbs[y * w + x] = pintado[pixel];
+            }
+        }
+        
+        imagen.setRGB(0, 0, w, h, rgbs, 0, w);
+        parent.imagenFiltrada(imagen);
     }
 }
 
