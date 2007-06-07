@@ -20,6 +20,7 @@ import org.ai.pattern.HistoryManager;
 import org.ai.pattern.Regiones;
 import org.ai.pattern.Umbral;
 import org.ai.pattern.gui.ImageFrame;
+import org.ai.pattern.util.Utilities;
 
 /**
  *
@@ -44,6 +45,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
     /** Creates new form MainFrame */
     public MainFrame() {
         initComponents();
+        initOtherComponents();
         historymanager = new HistoryManager(this);
         cronometro = new Cronometro();
         glass = new GlassPanelEspera();
@@ -487,6 +489,9 @@ private void jMenuItemAbrirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FI
 private void jMenuItemSalirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemSalirMousePressed
     salir();
 }//GEN-LAST:event_jMenuItemSalirMousePressed
+private void initOtherComponents(){
+    Utilities.setCentered(this);
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane jDesktopPane;
