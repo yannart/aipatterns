@@ -17,4 +17,5 @@ import java.awt.image.BufferedImage;
  */
 public interface Filtrable {
     public void imagenFiltrada(BufferedImage image);
+    public void imagenFiltrada(BufferedImage image, String mensaje);
 }

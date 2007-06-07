@@ -12,6 +12,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import org.ai.pattern.Cronometro;
 import org.ai.pattern.Filtrable;
 import org.ai.pattern.Filtro;
 import org.ai.pattern.Histograma;
@@ -38,11 +39,13 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
     RegionDialog regionesdlg;
     int imagenframes_id = 0;
     HistoryManager historymanager;
+    Cronometro cronometro;
     
     /** Creates new form MainFrame */
     public MainFrame() {
         initComponents();
         historymanager = new HistoryManager(this);
+        cronometro = new Cronometro();
         glass = new GlassPanelEspera();
         glass.setGlassPane(this);
     }
@@ -56,6 +59,8 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
     private void initComponents() {
 
         jDesktopPane = new javax.swing.JDesktopPane();
+        jPanelTaskBar = new javax.swing.JPanel();
+        jLabelMessage = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuArchivo = new javax.swing.JMenu();
         jMenuItemAbrir = new javax.swing.JMenuItem();
@@ -81,6 +86,22 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         });
 
         jDesktopPane.setBackground(new java.awt.Color(147, 191, 237));
+
+        jLabelMessage.setText("        ");
+
+        javax.swing.GroupLayout jPanelTaskBarLayout = new javax.swing.GroupLayout(jPanelTaskBar);
+        jPanelTaskBar.setLayout(jPanelTaskBarLayout);
+        jPanelTaskBarLayout.setHorizontalGroup(
+            jPanelTaskBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTaskBarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelMessage)
+                .addContainerGap(736, Short.MAX_VALUE))
+        );
+        jPanelTaskBarLayout.setVerticalGroup(
+            jPanelTaskBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelMessage)
+        );
 
         jMenuArchivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/system-file-manager.png"))); // NOI18N
         jMenuArchivo.setText("Archivo");
@@ -190,11 +211,15 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 768, Short.MAX_VALUE)
+            .addComponent(jPanelTaskBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelTaskBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -292,7 +317,7 @@ public void verHistograma(long[] valores, long maxnum){
     
     histogramadlg.setValues(valores, maxnum, getUmbralActual());
     
-    this.pausar(false);
+    this.pausar(false, "Histograma trazado en");
     
     histogramadlg.setVisible(true);
 }
@@ -323,8 +348,12 @@ public void regionalizar(int pasadas){
 }
 
 public void imagenFiltrada(BufferedImage image){
+    imagenFiltrada(image, "Imagen filtrada en");
+}
+
+public void imagenFiltrada(BufferedImage image, String mensaje){
     guardarUndo(image);
-    pausar(false);
+    this.pausar(false, mensaje);
     if(image != null){
         setImagenActual(image);
     }
@@ -388,10 +417,16 @@ private ImageFrame getSelectedFrame(){
 }
 
 public void pausar(final boolean enpausa){
+    pausar(enpausa, "proceso terminado en");
+}
+
+public void pausar(final boolean enpausa, String mensaje){
     if(enpausa){
         glass.setGlassPane(MainFrame.this);
         glass.setDrawing(true);
+        cronometro.start();
     }else{
+        jLabelMessage.setText(mensaje + " " + cronometro.stop() + " mseg");
         glass.removeGlassPane();
     }
 }
@@ -455,6 +490,7 @@ private void jMenuItemSalirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FI
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane jDesktopPane;
+    private javax.swing.JLabel jLabelMessage;
     private javax.swing.JMenu jMenuArchivo;
     private javax.swing.JMenu jMenuAyuda;
     private javax.swing.JMenuBar jMenuBar1;
@@ -469,6 +505,7 @@ private void jMenuItemSalirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FI
     private javax.swing.JMenuItem jMenuItemRehacer;
     private javax.swing.JMenuItem jMenuItemSalir;
     private javax.swing.JMenuItem jMenuItemUmbralizar;
+    private javax.swing.JPanel jPanelTaskBar;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
     
