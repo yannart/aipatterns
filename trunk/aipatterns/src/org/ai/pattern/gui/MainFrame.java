@@ -205,14 +205,24 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
 }//GEN-LAST:event_formWindowClosing
 
 private void jMenuItemRehacerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemRehacerMousePressed
+    if(getSelectedFrame() == null){
+        showErrorAlert();
+        return;
+    }
     int nivel = getNivelHistorialActual() + 1;
-    if(nivel > getSelectedFrame().getMaxNivelHistorial())
+    int maxnivel = getSelectedFrame().getMaxNivelHistorial();
+    if(nivel > maxnivel)
         return;
     historymanager.load(getIdActual(), nivel);
     setNivelHistorialActual(nivel);
 }//GEN-LAST:event_jMenuItemRehacerMousePressed
 
 private void jMenuItemDeshacerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemDeshacerMousePressed
+    if(getSelectedFrame() == null){
+        showErrorAlert();
+        return;
+    }
+    
     int nivel = getNivelHistorialActual() - 1;
     if(nivel < 0)
         return;
