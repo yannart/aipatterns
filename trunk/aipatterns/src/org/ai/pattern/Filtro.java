@@ -10,11 +10,12 @@
 package org.ai.pattern;
 
 import java.awt.image.BufferedImage;
+import static java.lang.Math.sqrt;
 
 /**
  *
  * @author yannart
- */
+ */;
 public class Filtro implements Runnable{
     
     private BufferedImage imagen;
@@ -38,7 +39,7 @@ public class Filtro implements Runnable{
     }
     
     public void run() {
-        int lado_matriz = (int) java.lang.Math.sqrt(matriz.length);
+        int lado_matriz = (int) sqrt(matriz.length);
         java.awt.image.BufferedImageOp op = new java.awt.image.ConvolveOp(new java.awt.image.Kernel(lado_matriz, lado_matriz, matriz));
         java.awt.image.BufferedImage nuevaImagen = op.filter(imagen, null);
         
