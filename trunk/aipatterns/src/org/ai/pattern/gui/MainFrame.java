@@ -106,8 +106,10 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
 
         jMenuBar1.add(jMenuArchivo);
 
+        jMenuEdicion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/edit-select-all.png"))); // NOI18N
         jMenuEdicion.setText("Edicion");
 
+        jMenuItemDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/edit-undo.png"))); // NOI18N
         jMenuItemDeshacer.setText("deshacer");
         jMenuItemDeshacer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -116,6 +118,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         });
         jMenuEdicion.add(jMenuItemDeshacer);
 
+        jMenuItemRehacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/edit-redo.png"))); // NOI18N
         jMenuItemRehacer.setText("rehacer");
         jMenuItemRehacer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -156,6 +159,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         });
         jMenuImagen.add(jMenuItemUmbralizar);
 
+        jMenuItemRegionalizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/regionalizar.png"))); // NOI18N
         jMenuItemRegionalizar.setText("Regionalizar");
         jMenuItemRegionalizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {

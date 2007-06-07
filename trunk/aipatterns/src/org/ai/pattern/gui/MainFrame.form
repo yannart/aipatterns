@@ -40,11 +40,17 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenuEdicion">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/imagenes/edit-select-all.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Edicion"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemDeshacer">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/imagenes/edit-undo.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="deshacer"/>
               </Properties>
               <Events>
@@ -53,6 +59,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemRehacer">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/imagenes/edit-redo.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="rehacer"/>
               </Properties>
               <Events>
@@ -104,6 +113,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemRegionalizar">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/imagenes/regionalizar.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Regionalizar"/>
               </Properties>
               <Events>
