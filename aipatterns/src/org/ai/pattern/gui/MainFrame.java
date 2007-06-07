@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import org.ai.pattern.Filtrable;
 import org.ai.pattern.Filtro;
 import org.ai.pattern.Histograma;
+import org.ai.pattern.HistoryManager;
 import org.ai.pattern.Regiones;
 import org.ai.pattern.Umbral;
 import org.ai.pattern.gui.ImageFrame;
@@ -35,10 +36,13 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
     UmbralDialog umbraldlg;
     HistogramaDialog histogramadlg;
     RegionDialog regionesdlg;
+    int imagenframes_id = 0;
+    HistoryManager historymanager;
     
     /** Creates new form MainFrame */
     public MainFrame() {
         initComponents();
+        historymanager = new HistoryManager(this);
         glass = new GlassPanelEspera();
         glass.setGlassPane(this);
     }
@@ -57,6 +61,9 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuItemAbrir = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JSeparator();
         jMenuItemSalir = new javax.swing.JMenuItem();
+        jMenuEdicion = new javax.swing.JMenu();
+        jMenuItemDeshacer = new javax.swing.JMenuItem();
+        jMenuItemRehacer = new javax.swing.JMenuItem();
         jMenuImagen = new javax.swing.JMenu();
         jMenuItemFiltrar = new javax.swing.JMenuItem();
         jMenuItemHistograma = new javax.swing.JMenuItem();
@@ -67,6 +74,11 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Reconocimiento de Patrones");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jDesktopPane.setBackground(new java.awt.Color(147, 191, 237));
 
@@ -93,6 +105,26 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuArchivo.add(jMenuItemSalir);
 
         jMenuBar1.add(jMenuArchivo);
+
+        jMenuEdicion.setText("Edicion");
+
+        jMenuItemDeshacer.setText("deshacer");
+        jMenuItemDeshacer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jMenuItemDeshacerMousePressed(evt);
+            }
+        });
+        jMenuEdicion.add(jMenuItemDeshacer);
+
+        jMenuItemRehacer.setText("rehacer");
+        jMenuItemRehacer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jMenuItemRehacerMousePressed(evt);
+            }
+        });
+        jMenuEdicion.add(jMenuItemRehacer);
+
+        jMenuBar1.add(jMenuEdicion);
 
         jMenuImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/imagen.png"))); // NOI18N
         jMenuImagen.setText("Imagen");
@@ -158,12 +190,32 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
+private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+    salir();
+}//GEN-LAST:event_formWindowClosing
+
+private void jMenuItemRehacerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemRehacerMousePressed
+    int nivel = getNivelHistorialActual() + 1;
+    if(nivel > getSelectedFrame().getMaxNivelHistorial())
+        return;
+    historymanager.load(getIdActual(), nivel);
+    setNivelHistorialActual(nivel);
+}//GEN-LAST:event_jMenuItemRehacerMousePressed
+
+private void jMenuItemDeshacerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemDeshacerMousePressed
+    int nivel = getNivelHistorialActual() - 1;
+    if(nivel < 0)
+        return;
+    historymanager.load(getIdActual(), nivel);
+    setNivelHistorialActual(nivel);
+}//GEN-LAST:event_jMenuItemDeshacerMousePressed
+
 private void jMenuItemRegionalizarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemRegionalizarMousePressed
     if(getSelectedFrame() == null){
         showErrorAlert();
@@ -257,6 +309,7 @@ public void regionalizar(int pasadas){
 }
 
 public void imagenFiltrada(BufferedImage image){
+    guardarUndo(image);
     pausar(false);
     if(image != null){
         setImagenActual(image);
@@ -270,6 +323,30 @@ public int getUmbralActual(){
     }
     
     return getSelectedFrame().getUmbral();
+}
+
+public int getIdActual(){
+    if(getSelectedFrame() == null){
+        return -1;
+    }
+    
+    return getSelectedFrame().getId();
+}
+
+public int getNivelHistorialActual(){
+    if(getSelectedFrame() == null){
+        return -1;
+    }
+    
+    return getSelectedFrame().getNivelHistorial();
+}
+
+public void setNivelHistorialActual(int nivel){
+    if(getSelectedFrame() == null){
+        return;
+    }
+    
+    getSelectedFrame().setNivelHistorial(nivel);
 }
 
 public void setUmbralActual(int umbral){
@@ -305,8 +382,24 @@ public void pausar(final boolean enpausa){
     }
 }
 
+private void guardarUndo(){
+    guardarUndo(getImagenActual());
+}
+
+private void guardarUndo(BufferedImage imagen){
+    int nivel = getNivelHistorialActual();
+    historymanager.borrar(getIdActual(), nivel + 1, getSelectedFrame().getMaxNivelHistorial());
+    historymanager.grab(getIdActual(), nivel + 1, imagen);
+    setNivelHistorialActual(nivel + 1);
+    getSelectedFrame().setMaxNivelHistorial(nivel + 1);
+}
+
 private void showErrorAlert(){
     JOptionPane.showMessageDialog(this,"No puede ejecutar esta accion sin seleccionar una imagen","Error", JOptionPane.ERROR_MESSAGE);
+}
+
+public void salir(){
+    historymanager.borrarCarpeta();
 }
 
 private void jMenuItemFiltrarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemFiltrarMousePressed
@@ -334,14 +427,16 @@ private void jMenuItemAbrirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FI
     
     if (returnVal == JFileChooser.APPROVE_OPTION) {
         File file = filechooser.getSelectedFile();
-        JInternalFrame internalframe = new ImageFrame(file);
+        JInternalFrame internalframe = new ImageFrame(file, imagenframes_id);
+        imagenframes_id ++;
         jDesktopPane.add(internalframe);
         jDesktopPane.setSelectedFrame(internalframe);
+        guardarUndo();
     }
 }//GEN-LAST:event_jMenuItemAbrirMousePressed
 
 private void jMenuItemSalirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemSalirMousePressed
-    this.dispose();
+    salir();
 }//GEN-LAST:event_jMenuItemSalirMousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -349,12 +444,15 @@ private void jMenuItemSalirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FI
     private javax.swing.JMenu jMenuArchivo;
     private javax.swing.JMenu jMenuAyuda;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenuEdicion;
     private javax.swing.JMenu jMenuImagen;
     private javax.swing.JMenuItem jMenuItemAbout;
     private javax.swing.JMenuItem jMenuItemAbrir;
+    private javax.swing.JMenuItem jMenuItemDeshacer;
     private javax.swing.JMenuItem jMenuItemFiltrar;
     private javax.swing.JMenuItem jMenuItemHistograma;
     private javax.swing.JMenuItem jMenuItemRegionalizar;
+    private javax.swing.JMenuItem jMenuItemRehacer;
     private javax.swing.JMenuItem jMenuItemSalir;
     private javax.swing.JMenuItem jMenuItemUmbralizar;
     private javax.swing.JSeparator jSeparator1;
