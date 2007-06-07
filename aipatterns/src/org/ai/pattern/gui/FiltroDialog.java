@@ -16,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import org.ai.pattern.util.Utilities;
 
 /**
  *
@@ -59,9 +60,9 @@ public class FiltroDialog extends javax.swing.JDialog {
     };
     
     
-    /** Creates new form FiltroDialog 
-     * @param parent 
-     * @param modal 
+    /** Creates new form FiltroDialog
+     * @param parent
+     * @param modal
      */
     public FiltroDialog(MainFrame parent, boolean modal) {
         super(parent, modal);
@@ -215,12 +216,12 @@ public class FiltroDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
 private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
     setVisible(false);
     transform();
 }//GEN-LAST:event_jButtonAceptarActionPerformed
-    
+
 private void jButtonAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAceptarMouseClicked
     
 }//GEN-LAST:event_jButtonAceptarMouseClicked
@@ -272,6 +273,7 @@ private void setElementosMatriz(int ladoMatriz){
 }
 
 private void initMyComponents(){
+    Utilities.setCentered(this);
     getRootPane().setDefaultButton(jButtonAceptar);
     matriz3 = new JPanel(new GridLayout(3, 3));
     matriz5 = new JPanel(new GridLayout(5, 5));

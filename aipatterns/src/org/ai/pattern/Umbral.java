@@ -54,6 +54,7 @@ public class Umbral implements Runnable{
         for(int x = 0; x < w; x++){
             for(int y =0; y < h; y++){
                 posicion = y * w + x;
+  
                 pixel = rgbs[posicion];
                 gris = (((pixel >>16 ) & 0xFF) + ((pixel >> 8 ) & 0xFF) + (pixel & 0xFF))/3;
                 if(gris < umbral){

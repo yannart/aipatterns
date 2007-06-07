@@ -6,6 +6,8 @@
 
 package org.ai.pattern.gui;
 
+import org.ai.pattern.util.Utilities;
+
 /**
  *
  * @author  yannart,armando
@@ -19,6 +21,7 @@ public class AcercaDe extends javax.swing.JDialog {
     public AcercaDe(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        Utilities.setCentered(this);
     }
     
     /** This method is called from within the constructor to
