@@ -21,11 +21,16 @@ public class ImageFrame extends javax.swing.JInternalFrame {
     
     private ImagePanel imagepanel;
     private int umbral = 127;
+    private int id;
+    private int nivelhistorial = -1;
+    private int maxnivelhistorial = -1;
     
     /** Creates new form ImageFrame
      * @param file
+     * @param id
      */
-    public ImageFrame(File file) {
+    public ImageFrame(File file, int id) {
+        this.id = id;
         initComponents();
         this.setTitle(file.getName());
         
@@ -54,6 +59,25 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         this.umbral = umbral;
     }
     
+    public int getId(){
+        return id;
+    }
+    
+    public int getNivelHistorial(){
+        return nivelhistorial;
+    }
+    
+    public void setNivelHistorial(int nivel){
+        nivelhistorial = nivel;
+    }
+    
+    public int getMaxNivelHistorial() {
+        return maxnivelhistorial;
+    }
+    
+    public void setMaxNivelHistorial(int maxnivelhistorial) {
+        this.maxnivelhistorial = maxnivelhistorial;
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -101,14 +125,14 @@ public class ImageFrame extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
 private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
     imagepanel.getImage().flush();
     imagepanel = null;
     System.gc();
 }//GEN-LAST:event_formInternalFrameClosing
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPaneContenedor;
     // End of variables declaration//GEN-END:variables
