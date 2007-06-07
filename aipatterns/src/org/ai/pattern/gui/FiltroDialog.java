@@ -146,6 +146,11 @@ public class FiltroDialog extends javax.swing.JDialog {
                 jButtonAceptarMouseClicked(evt);
             }
         });
+        jButtonAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAceptarActionPerformed(evt);
+            }
+        });
 
         jButtonCancelar.setText("Cancelar");
         jButtonCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -210,10 +215,14 @@ public class FiltroDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-private void jButtonAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAceptarMouseClicked
+
+private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
     setVisible(false);
     transform();
+}//GEN-LAST:event_jButtonAceptarActionPerformed
+    
+private void jButtonAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAceptarMouseClicked
+    
 }//GEN-LAST:event_jButtonAceptarMouseClicked
 
 private void jButtonCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelarMouseClicked
@@ -263,6 +272,7 @@ private void setElementosMatriz(int ladoMatriz){
 }
 
 private void initMyComponents(){
+    getRootPane().setDefaultButton(jButtonAceptar);
     matriz3 = new JPanel(new GridLayout(3, 3));
     matriz5 = new JPanel(new GridLayout(5, 5));
     jPanelMatrizData.setLayout(new CardLayout());
