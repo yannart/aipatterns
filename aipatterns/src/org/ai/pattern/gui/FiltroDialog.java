@@ -300,14 +300,18 @@ private void initMyComponents(){
 }
 
 private void transform(){
+    
     if(jComboBoxTamano.getSelectedIndex() == 0){
+        // la mascara es de 3*3
         parent.filtrar(getMatrizValues3());
     }else{
+        // la mascara es de 5*5
         parent.filtrar(getMatrizValues5());
     }
 }
 
 private float[] getMatrizValues3(){
+    // transforma los elementos de la mascara a float
     float [] values = new float [9];
     for(int i=0; i < 9; i++){
         values[i] = Float.parseFloat(elementosmatriz3[i].getText());
