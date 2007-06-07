@@ -13,17 +13,23 @@ public class Regiones implements Runnable{
     private BufferedImage imagen;
     private Filtrable parent;
     private Thread thread;
+    private int pasadas;
     
     public Regiones(Filtrable parent){
         this.parent = parent;
     }
     
     public void regionalizar(BufferedImage imagen){
+        regionalizar(imagen, 10);
+    }
+    
+    public void regionalizar(BufferedImage imagen, int pasadas){
         
         if(imagen == null){
             parent.imagenFiltrada(null);
         }
         this.imagen = imagen;
+        this.pasadas = pasadas;
         
         thread = new Thread(this);
         thread.start();
@@ -79,20 +85,20 @@ public class Regiones implements Runnable{
                         pixel = s;
                     }else if(r != 0){
                         pixel = r;
-                    }else if(u != 0){
+                    /*}else if(u != 0){
                         pixel = u;
-                    }else if(t != 0){
-                        pixel = t;
-                    }else{
+                     */}else if(t != 0){
+                         pixel = t;
+                     }else{
                         pixel = colores;
                         colores++;
-                    }
+                     }
                 }
                 rgbs[y * w + x] = pixel;
             }
         }
         
-        //Segunda pasada:
+        //Pasadas intermedias:
         /* Posicion de los pixeles:
          *      x  x  x
          *      x  P  t
@@ -100,7 +106,46 @@ public class Regiones implements Runnable{
          */
         Random generator = new Random();
         int pintado[] = new int [colores];
-        int newcolor = 5000;
+        
+        for(int p = 0; p < pasadas - 1; p++){
+            colores = 1;
+            
+            for(int y = 0; y < h; y++){
+                for(int x = 0; x < w; x++){
+                    
+                    if(x != w - 1){
+                        t = rgbs[y * w + (x + 1)];
+                    }else{
+                        t = 0;
+                    }
+                    pixel = rgbs[y * w + x];
+                    if(pixel != 0){
+                        if(pintado[t] != 0 && pixel != t){
+                            pintado[pixel] = pintado[t];
+                        }else{
+                            if(pintado[pixel] == 0){
+                                pintado[pixel] = colores;
+                                colores++;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            for(int y = 0; y < h; y++){
+                for(int x = 0; x < w; x++){
+                    pixel = rgbs[y * w + x];
+                    rgbs[y * w + x] = pintado[pixel];
+                }
+            }
+            
+            for(int i = 0; i < pintado.length; i++){
+                pintado[i] = 0;
+            }
+        }
+        
+        //Ultima pasada
+        colores = 0;
         for(int y = 0; y < h; y++){
             for(int x = 0; x < w; x++){
                 
@@ -115,8 +160,8 @@ public class Regiones implements Runnable{
                         pintado[pixel] = pintado[t];
                     }else{
                         if(pintado[pixel] == 0){
-                            pintado[pixel] = newcolor;
-                            newcolor = (generator.nextInt(255) << 16) + (generator.nextInt(255) << 8) + generator.nextInt(255);
+                            pintado[pixel] = ((generator.nextInt(254) + 1) << 16) + ((generator.nextInt(254) + 1) << 8) + (generator.nextInt(254) + 1);
+                            colores++;
                         }
                     }
                 }

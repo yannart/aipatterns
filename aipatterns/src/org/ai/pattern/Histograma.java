@@ -34,16 +34,17 @@ public class Histograma implements Runnable{
     }
     
     public void run() {
-        System.gc();
         int w = imagen.getWidth();
         int h = imagen.getHeight();
         long[] valores = new long[256];
+        int[] rgbs = new int[w*h];
+        imagen.getRGB(0,0,w,h,rgbs,0,w);
         
         int gris;
         int pixel;
-        for(int i = 0; i < w; i++){
-            for(int j =0; j < h; j++){
-                pixel = imagen.getRGB(i, j);
+        for(int x = 0; x < w; x++){
+            for(int y =0; y < h; y++){
+                pixel = rgbs[y * w + x];
                 gris = (((pixel >>16 ) & 0xFF) + ((pixel >> 8 ) & 0xFF) + (pixel & 0xFF))/3;
                 valores[gris]++;
             }
