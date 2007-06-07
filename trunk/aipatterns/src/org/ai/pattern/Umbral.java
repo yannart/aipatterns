@@ -44,27 +44,28 @@ public class Umbral implements Runnable{
     public void run() {
         int w = imagen.getWidth();
         int h = imagen.getHeight();
-        BufferedImage newimagen = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        int[] rgbs = new int[w*h];
+        imagen.getRGB(0,0,w,h,rgbs,0,w);
         
         int gris;
         int pixel;
+        int posicion;
         
-        for(int i = 0; i < w; i++){
-            for(int j =0; j < h; j++){
-                pixel = imagen.getRGB(i, j);
+        for(int x = 0; x < w; x++){
+            for(int y =0; y < h; y++){
+                posicion = y * w + x;
+                pixel = rgbs[posicion];
                 gris = (((pixel >>16 ) & 0xFF) + ((pixel >> 8 ) & 0xFF) + (pixel & 0xFF))/3;
                 if(gris < umbral){
-                    newimagen.setRGB(i, j, 0xFF000000);
+                    rgbs[posicion] = 0xFF000000;
                 }else{
-                    newimagen.setRGB(i, j, 0xFFFFFFFF);
+                    rgbs[posicion] = 0xFFFFFFFF;
                 }
             }
         }
         
-        imagen.flush();
-        imagen = null;
-        System.gc();
-        parent.imagenFiltrada(newimagen);
+        imagen.setRGB(0, 0, w, h, rgbs, 0, w);
+        parent.imagenFiltrada(imagen);
     }
 }
 
