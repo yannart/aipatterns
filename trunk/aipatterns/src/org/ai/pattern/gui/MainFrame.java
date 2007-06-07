@@ -34,6 +34,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
     FiltroDialog filtrodlg;
     UmbralDialog umbraldlg;
     HistogramaDialog histogramadlg;
+    RegionDialog regionesdlg;
     
     /** Creates new form MainFrame */
     public MainFrame() {
@@ -169,14 +170,11 @@ private void jMenuItemRegionalizarMousePressed(java.awt.event.MouseEvent evt) {/
         return;
     }
     
-    if(regiones == null){
-        regiones = new Regiones(this);
+    if(regionesdlg == null){
+        regionesdlg = new RegionDialog(this, true);
     }
-    BufferedImage imagen = getImagenActual();
-    if(imagen != null){
-        this.pausar(true);
-        regiones.regionalizar(imagen);
-    }
+    
+    regionesdlg.setVisible(true);
 }//GEN-LAST:event_jMenuItemRegionalizarMousePressed
 
 private void jMenuItemHistogramaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemHistogramaMousePressed
@@ -243,6 +241,18 @@ public void umbralizar(int umbral_val){
         setUmbralActual(umbral_val);
         this.pausar(true);
         umbral.umbralizar(bufferedImage, umbral_val);
+    }
+}
+
+public void regionalizar(int pasadas){
+    if(regiones == null){
+        regiones = new Regiones(this);
+    }
+    
+    BufferedImage imagen = getImagenActual();
+    if(imagen != null){
+        this.pausar(true);
+        regiones.regionalizar(imagen, pasadas);
     }
 }
 
