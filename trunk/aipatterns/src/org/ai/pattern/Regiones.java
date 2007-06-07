@@ -176,7 +176,7 @@ public class Regiones implements Runnable{
         }
         
         imagen.setRGB(0, 0, w, h, rgbs, 0, w);
-        parent.imagenFiltrada(imagen);
+        parent.imagenFiltrada(imagen, "Regiones detectadas en");
     }
 }
 
