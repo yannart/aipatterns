@@ -79,7 +79,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuAyuda = new javax.swing.JMenu();
         jMenuItemAbout = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Reconocimiento de Patrones");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -451,6 +451,8 @@ private void showErrorAlert(){
 
 public void salir(){
     historymanager.borrarCarpeta();
+    this.dispose();
+    System.exit(0);
 }
 
 private void jMenuItemFiltrarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemFiltrarMousePressed
