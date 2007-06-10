@@ -21,6 +21,7 @@
               </Properties>
               <Events>
                 <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenuItemAbrirMousePressed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemAbrirActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator1">
@@ -204,7 +205,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabelMessage" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="736" max="32767" attributes="0"/>
+                  <EmptySpace pref="746" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

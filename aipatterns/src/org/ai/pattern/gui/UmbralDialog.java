@@ -6,6 +6,8 @@
 
 package org.ai.pattern.gui;
 
+import org.ai.pattern.util.Utilities;
+
 /**
  *
  * @author  yannart
@@ -19,6 +21,7 @@ public class UmbralDialog extends javax.swing.JDialog {
         super(parent, modal);
         this.parent = parent;
         initComponents();
+        initMyComponents();
     }
     
     /** This method is called from within the constructor to
@@ -120,6 +123,9 @@ private void jButtonCancelarMousePressed(java.awt.event.MouseEvent evt) {//GEN-F
  */
 public void setUmbral(int umbral){
     jSpinnerUmbral.setValue(new Integer(umbral));
+}
+private void initMyComponents(){
+    Utilities.setCentered(this);
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
