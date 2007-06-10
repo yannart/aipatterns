@@ -27,13 +27,18 @@ public class Filtro implements Runnable{
         this.parent = parent;
     }
     
+    /**
+     * Metodo que filtra una imagen dada su mascara
+     * @param imagen Imagen a filtrar
+     * @param matriz Mascara para filtar
+     */
     public synchronized void filtrar(BufferedImage imagen, float[] matriz){
         this.imagen = imagen;
         this.matriz = matriz;
         if(imagen == null){
             parent.imagenFiltrada(null);
         }
-        
+        //comienza el filtrado de la imagen
         thread = new Thread(this);
         thread.start();
     }

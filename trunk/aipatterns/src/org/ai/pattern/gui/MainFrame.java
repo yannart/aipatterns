@@ -7,11 +7,14 @@
 package org.ai.pattern.gui;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import org.ai.pattern.Cronometro;
 import org.ai.pattern.Filtrable;
 import org.ai.pattern.Filtro;
@@ -98,7 +101,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
             .addGroup(jPanelTaskBarLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabelMessage)
-                .addContainerGap(736, Short.MAX_VALUE))
+                .addContainerGap(746, Short.MAX_VALUE))
         );
         jPanelTaskBarLayout.setVerticalGroup(
             jPanelTaskBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -113,6 +116,11 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuItemAbrir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jMenuItemAbrirMousePressed(evt);
+            }
+        });
+        jMenuItemAbrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAbrirActionPerformed(evt);
             }
         });
         jMenuArchivo.add(jMenuItemAbrir);
@@ -227,6 +235,21 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
+private void jMenuItemAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAbrirActionPerformed
+    openImageFile();
+}//GEN-LAST:event_jMenuItemAbrirActionPerformed
+private void openImageFile(){
+    int returnVal = filechooser.showOpenDialog(this);
+    
+    if (returnVal == JFileChooser.APPROVE_OPTION) {
+        File file = filechooser.getSelectedFile();
+        JInternalFrame internalframe = new ImageFrame(file, imagenframes_id);
+        imagenframes_id ++;
+        jDesktopPane.add(internalframe);
+        jDesktopPane.setSelectedFrame(internalframe);
+        guardarUndo();
+    }
+}
 private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
     salir();
 }//GEN-LAST:event_formWindowClosing
@@ -476,16 +499,7 @@ private void jMenuItemAboutMousePressed(java.awt.event.MouseEvent evt) {//GEN-FI
 }//GEN-LAST:event_jMenuItemAboutMousePressed
 
 private void jMenuItemAbrirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemAbrirMousePressed
-    int returnVal = filechooser.showOpenDialog(this);
-    
-    if (returnVal == JFileChooser.APPROVE_OPTION) {
-        File file = filechooser.getSelectedFile();
-        JInternalFrame internalframe = new ImageFrame(file, imagenframes_id);
-        imagenframes_id ++;
-        jDesktopPane.add(internalframe);
-        jDesktopPane.setSelectedFrame(internalframe);
-        guardarUndo();
-    }
+    openImageFile();
 }//GEN-LAST:event_jMenuItemAbrirMousePressed
 
 private void jMenuItemSalirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemSalirMousePressed
@@ -493,6 +507,9 @@ private void jMenuItemSalirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FI
 }//GEN-LAST:event_jMenuItemSalirMousePressed
 private void initOtherComponents(){
     Utilities.setCentered(this);
+    jMenuItemAbrir.setMnemonic(KeyEvent.VK_A);
+    jMenuItemAbrir.setAccelerator(KeyStroke.getKeyStroke(
+            KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

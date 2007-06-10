@@ -6,6 +6,8 @@
 
 package org.ai.pattern.gui;
 
+import org.ai.pattern.util.Utilities;
+
 /**
  *
  * @author  yannart
@@ -22,6 +24,7 @@ public class RegionDialog extends javax.swing.JDialog {
         super(parent, modal);
         this.parent = parent;
         initComponents();
+        initMyComponents();
     }
     
     /** This method is called from within the constructor to
@@ -116,7 +119,9 @@ private void jButtonAceptarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FI
 private void jButtonCancelarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelarMousePressed
     this.setVisible(false);
 }//GEN-LAST:event_jButtonCancelarMousePressed
-
+private void initMyComponents(){
+    Utilities.setCentered(this);
+}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAceptar;
     private javax.swing.JButton jButtonCancelar;
