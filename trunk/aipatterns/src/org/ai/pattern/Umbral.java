@@ -10,6 +10,7 @@
 package org.ai.pattern;
 
 import java.awt.image.BufferedImage;
+import static org.ai.pattern.Desaturador.desaturar;
 
 /**
  *
@@ -47,7 +48,6 @@ public class Umbral implements Runnable{
         int[] rgbs = new int[w*h];
         imagen.getRGB(0,0,w,h,rgbs,0,w);
         
-        int gris;
         int pixel;
         int posicion;
         
@@ -56,8 +56,7 @@ public class Umbral implements Runnable{
                 posicion = y * w + x;
   
                 pixel = rgbs[posicion];
-                gris = (((pixel >>16 ) & 0xFF) + ((pixel >> 8 ) & 0xFF) + (pixel & 0xFF))/3;
-                if(gris < umbral){
+                if(desaturar(pixel) < umbral){
                     rgbs[posicion] = 0xFF000000;
                 }else{
                     rgbs[posicion] = 0xFFFFFFFF;

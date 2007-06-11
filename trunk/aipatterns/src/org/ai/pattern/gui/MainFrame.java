@@ -7,19 +7,18 @@
 package org.ai.pattern.gui;
 
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
+import org.ai.pattern.Bordes;
 import org.ai.pattern.Cronometro;
 import org.ai.pattern.Filtrable;
 import org.ai.pattern.Filtro;
 import org.ai.pattern.Histograma;
 import org.ai.pattern.HistoryManager;
+import org.ai.pattern.Negativo;
 import org.ai.pattern.Regiones;
 import org.ai.pattern.Umbral;
 import org.ai.pattern.gui.ImageFrame;
@@ -37,13 +36,17 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
     Umbral umbral;
     Histograma histograma;
     Regiones regiones;
+    Bordes bordes;
+    Negativo negativo;
     FiltroDialog filtrodlg;
     UmbralDialog umbraldlg;
     HistogramaDialog histogramadlg;
     RegionDialog regionesdlg;
+    BordesDialog bordesdlg;
     int imagenframes_id = 0;
     HistoryManager historymanager;
     Cronometro cronometro;
+    boolean enpausa;
     
     /** Creates new form MainFrame */
     public MainFrame() {
@@ -76,6 +79,8 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuItemRehacer = new javax.swing.JMenuItem();
         jMenuImagen = new javax.swing.JMenu();
         jMenuItemFiltrar = new javax.swing.JMenuItem();
+        jMenuItemNegativo = new javax.swing.JMenuItem();
+        jMenuItemBordes = new javax.swing.JMenuItem();
         jMenuItemHistograma = new javax.swing.JMenuItem();
         jMenuItemUmbralizar = new javax.swing.JMenuItem();
         jMenuItemRegionalizar = new javax.swing.JMenuItem();
@@ -111,6 +116,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuArchivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/system-file-manager.png"))); // NOI18N
         jMenuArchivo.setText("Archivo");
 
+        jMenuItemAbrir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/abrir.png"))); // NOI18N
         jMenuItemAbrir.setText("Abrir");
         jMenuItemAbrir.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -126,11 +132,17 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuArchivo.add(jMenuItemAbrir);
         jMenuArchivo.add(jSeparator1);
 
+        jMenuItemSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/quit.png"))); // NOI18N
         jMenuItemSalir.setText("Salir");
         jMenuItemSalir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jMenuItemSalirMousePressed(evt);
+            }
+        });
+        jMenuItemSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemSalirActionPerformed(evt);
             }
         });
         jMenuArchivo.add(jMenuItemSalir);
@@ -140,6 +152,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuEdicion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/edit-select-all.png"))); // NOI18N
         jMenuEdicion.setText("Edicion");
 
+        jMenuItemDeshacer.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/edit-undo.png"))); // NOI18N
         jMenuItemDeshacer.setText("deshacer");
         jMenuItemDeshacer.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -147,13 +160,24 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
                 jMenuItemDeshacerMousePressed(evt);
             }
         });
+        jMenuItemDeshacer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemDeshacerActionPerformed(evt);
+            }
+        });
         jMenuEdicion.add(jMenuItemDeshacer);
 
+        jMenuItemRehacer.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemRehacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/edit-redo.png"))); // NOI18N
         jMenuItemRehacer.setText("rehacer");
         jMenuItemRehacer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jMenuItemRehacerMousePressed(evt);
+            }
+        });
+        jMenuItemRehacer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemRehacerActionPerformed(evt);
             }
         });
         jMenuEdicion.add(jMenuItemRehacer);
@@ -163,15 +187,50 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/imagen.png"))); // NOI18N
         jMenuImagen.setText("Imagen");
 
+        jMenuItemFiltrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemFiltrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/draw_pencil.png"))); // NOI18N
-        jMenuItemFiltrar.setText("Aplicar filtro");
+        jMenuItemFiltrar.setText("Aplicar Filtro");
         jMenuItemFiltrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jMenuItemFiltrarMousePressed(evt);
             }
         });
+        jMenuItemFiltrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemFiltrarActionPerformed(evt);
+            }
+        });
         jMenuImagen.add(jMenuItemFiltrar);
 
+        jMenuItemNegativo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemNegativo.setText("Invertir Colores");
+        jMenuItemNegativo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jMenuItemNegativoMousePressed(evt);
+            }
+        });
+        jMenuItemNegativo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemNegativoActionPerformed(evt);
+            }
+        });
+        jMenuImagen.add(jMenuItemNegativo);
+
+        jMenuItemBordes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemBordes.setText("Trazar Bordes");
+        jMenuItemBordes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jMenuItemBordesMousePressed(evt);
+            }
+        });
+        jMenuItemBordes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemBordesActionPerformed(evt);
+            }
+        });
+        jMenuImagen.add(jMenuItemBordes);
+
+        jMenuItemHistograma.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemHistograma.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/histograma.png"))); // NOI18N
         jMenuItemHistograma.setText("Ver Histograma");
         jMenuItemHistograma.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -179,8 +238,14 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
                 jMenuItemHistogramaMousePressed(evt);
             }
         });
+        jMenuItemHistograma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemHistogramaActionPerformed(evt);
+            }
+        });
         jMenuImagen.add(jMenuItemHistograma);
 
+        jMenuItemUmbralizar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemUmbralizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/umbralizar.png"))); // NOI18N
         jMenuItemUmbralizar.setText("Umbralizar");
         jMenuItemUmbralizar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -188,13 +253,24 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
                 jMenuItemUmbralizarMousePressed(evt);
             }
         });
+        jMenuItemUmbralizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemUmbralizarActionPerformed(evt);
+            }
+        });
         jMenuImagen.add(jMenuItemUmbralizar);
 
+        jMenuItemRegionalizar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemRegionalizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/regionalizar.png"))); // NOI18N
         jMenuItemRegionalizar.setText("Regionalizar");
         jMenuItemRegionalizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jMenuItemRegionalizarMousePressed(evt);
+            }
+        });
+        jMenuItemRegionalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemRegionalizarActionPerformed(evt);
             }
         });
         jMenuImagen.add(jMenuItemRegionalizar);
@@ -204,11 +280,17 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/help.png"))); // NOI18N
         jMenuAyuda.setText("Ayuda");
 
+        jMenuItemAbout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         jMenuItemAbout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/foco.png"))); // NOI18N
         jMenuItemAbout.setText("Acerca de...");
         jMenuItemAbout.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jMenuItemAboutMousePressed(evt);
+            }
+        });
+        jMenuItemAbout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAboutActionPerformed(evt);
             }
         });
         jMenuAyuda.add(jMenuItemAbout);
@@ -222,7 +304,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanelTaskBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
+            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 790, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -234,6 +316,94 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+private void jMenuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAboutActionPerformed
+    if(!enpausa){
+        jMenuItemAboutMousePressed(null);
+    }
+}//GEN-LAST:event_jMenuItemAboutActionPerformed
+
+private void jMenuItemRegionalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRegionalizarActionPerformed
+    if(!enpausa){
+        jMenuItemRegionalizarMousePressed(null);
+    }
+}//GEN-LAST:event_jMenuItemRegionalizarActionPerformed
+
+private void jMenuItemUmbralizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemUmbralizarActionPerformed
+    if(!enpausa){
+        jMenuItemUmbralizarMousePressed(null);
+    }
+}//GEN-LAST:event_jMenuItemUmbralizarActionPerformed
+
+private void jMenuItemHistogramaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemHistogramaActionPerformed
+    if(!enpausa){
+        jMenuItemHistogramaMousePressed(null);
+    }
+}//GEN-LAST:event_jMenuItemHistogramaActionPerformed
+
+private void jMenuItemBordesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBordesActionPerformed
+    if(!enpausa){
+        jMenuItemBordesMousePressed(null);
+    }
+}//GEN-LAST:event_jMenuItemBordesActionPerformed
+
+private void jMenuItemNegativoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNegativoActionPerformed
+    if(!enpausa){
+        jMenuItemNegativoMousePressed(null);
+    }  
+}//GEN-LAST:event_jMenuItemNegativoActionPerformed
+
+private void jMenuItemFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFiltrarActionPerformed
+    if(!enpausa){
+        jMenuItemFiltrarMousePressed(null);
+    }
+}//GEN-LAST:event_jMenuItemFiltrarActionPerformed
+
+private void jMenuItemRehacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRehacerActionPerformed
+    if(!enpausa){
+        jMenuItemRehacerMousePressed(null);
+    }
+}//GEN-LAST:event_jMenuItemRehacerActionPerformed
+
+private void jMenuItemDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDeshacerActionPerformed
+    if(!enpausa){
+        jMenuItemDeshacerMousePressed(null);
+    }
+}//GEN-LAST:event_jMenuItemDeshacerActionPerformed
+
+private void jMenuItemSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSalirActionPerformed
+    if(!enpausa){
+        jMenuItemSalirMousePressed(null);
+    }
+}//GEN-LAST:event_jMenuItemSalirActionPerformed
+
+private void jMenuItemNegativoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemNegativoMousePressed
+    if(getSelectedFrame() == null){
+        showErrorAlert();
+        return;
+    }
+    
+    if(negativo == null){
+        negativo = new Negativo(this);
+    }
+    BufferedImage imagen = getImagenActual();
+    if(imagen != null){
+        this.pausar(true);
+        negativo.negativo(imagen);
+    }
+}//GEN-LAST:event_jMenuItemNegativoMousePressed
+
+private void jMenuItemBordesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemBordesMousePressed
+    if(getSelectedFrame() == null){
+        showErrorAlert();
+        return;
+    }
+    
+    if(bordesdlg == null){
+        bordesdlg = new BordesDialog(this, true);
+    }
+    bordesdlg.setVisible(true);
+}//GEN-LAST:event_jMenuItemBordesMousePressed
     
 private void jMenuItemAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAbrirActionPerformed
     openImageFile();
@@ -372,6 +542,18 @@ public void regionalizar(int pasadas){
     }
 }
 
+public void bordear(int operador){
+    if(bordes == null){
+        bordes = new Bordes(this);
+    }
+    
+    BufferedImage imagen = getImagenActual();
+    if(imagen != null){
+        this.pausar(true);
+        bordes.trazarbordes(imagen, operador);
+    }
+}
+
 public void imagenFiltrada(BufferedImage image){
     imagenFiltrada(image, "Imagen filtrada en");
 }
@@ -446,6 +628,7 @@ public void pausar(final boolean enpausa){
 }
 
 public void pausar(final boolean enpausa, String mensaje){
+    this.enpausa = enpausa;
     if(enpausa){
         glass.setGlassPane(MainFrame.this);
         glass.setDrawing(true);
@@ -507,9 +690,6 @@ private void jMenuItemSalirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FI
 }//GEN-LAST:event_jMenuItemSalirMousePressed
 private void initOtherComponents(){
     Utilities.setCentered(this);
-    jMenuItemAbrir.setMnemonic(KeyEvent.VK_A);
-    jMenuItemAbrir.setAccelerator(KeyStroke.getKeyStroke(
-            KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -522,9 +702,11 @@ private void initOtherComponents(){
     private javax.swing.JMenu jMenuImagen;
     private javax.swing.JMenuItem jMenuItemAbout;
     private javax.swing.JMenuItem jMenuItemAbrir;
+    private javax.swing.JMenuItem jMenuItemBordes;
     private javax.swing.JMenuItem jMenuItemDeshacer;
     private javax.swing.JMenuItem jMenuItemFiltrar;
     private javax.swing.JMenuItem jMenuItemHistograma;
+    private javax.swing.JMenuItem jMenuItemNegativo;
     private javax.swing.JMenuItem jMenuItemRegionalizar;
     private javax.swing.JMenuItem jMenuItemRehacer;
     private javax.swing.JMenuItem jMenuItemSalir;
