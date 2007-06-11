@@ -53,19 +53,25 @@ import static org.ai.pattern.Desaturador.*;
          int[] rgbs = new int[w*h];
          imagen.getRGB(0,0,w,h,rgbs,0,w);
          
+         for(int y = 0; y < h; y++){
+             for(int x =0; x < w; x++){
+                 rgbs[y * w + x] = desaturar(rgbs[y * w + x]);
+             }
+         }
+         
          int pixel;
          int r, s;
          for(int y = 0; y < h; y++){
              for(int x =0; x < w; x++){
-                 pixel = desaturar(rgbs[y * w + x]);
+                 pixel = rgbs[y * w + x];
                  if(x != w - 1){
-                     r = desaturar(rgbs[y * w + x + 1]);
+                     r = rgbs[y * w + x + 1];
                  }else{
                      r = 0;
                  }
                  
                  if(y != h - 1){
-                     s = desaturar(rgbs[(y + 1)* w + x]);
+                     s = rgbs[(y + 1)* w + x];
                  }else{
                      s = 0;
                  }
@@ -85,6 +91,12 @@ import static org.ai.pattern.Desaturador.*;
          
          int gX, gY;
          int [] z = new int [8];
+         
+         for(int y = 0; y < h; y++){
+             for(int x =0; x < w; x++){
+                 rgbs[y * w + x] = desaturar(rgbs[y * w + x]);
+             }
+         }
          
          for(int y = 0; y < h; y++){
              for(int x =0; x < w; x++){
@@ -138,7 +150,7 @@ import static org.ai.pattern.Desaturador.*;
                  imagen.setRGB(x, y, gris2RGB((int) Math.sqrt(gX * gX + gY * gY)));
              }
          }
-
+         
          parent.imagenFiltrada(imagen, "Trazado de bordes con el operador Prewitt en");
      }
      
@@ -150,6 +162,12 @@ import static org.ai.pattern.Desaturador.*;
          
          int gX, gY;
          int [] z = new int [8];
+         
+         for(int y = 0; y < h; y++){
+             for(int x =0; x < w; x++){
+                 rgbs[y * w + x] = desaturar(rgbs[y * w + x]);
+             }
+         }
          
          for(int y = 0; y < h; y++){
              for(int x =0; x < w; x++){
@@ -196,7 +214,7 @@ import static org.ai.pattern.Desaturador.*;
                  }else{
                      z[6] = 0;
                  }
-
+                 
                  gX = z[5] + 2*z[6] + z[7] - z[0] - 2*z[1] - z[2];
                  gY = z[2] + 2*z[4] + z[7] - z[0] - 2*z[3] - z[5];
                  
