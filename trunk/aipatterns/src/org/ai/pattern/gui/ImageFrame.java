@@ -8,8 +8,11 @@ package org.ai.pattern.gui;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.ai.pattern.ImageLoader;
 
@@ -152,6 +155,21 @@ class ImagePanel extends JPanel{
         Dimension dimension = new Dimension(image.getWidth(), image.getHeight());
         this.setPreferredSize(dimension);
         this.setSize(dimension);
+        this.addMouseListener(new MouseListener(){
+            
+            public void mouseClicked(MouseEvent evt) {
+                muestraInformacionRegion(evt.getX(), evt.getY());
+            }
+            
+            public void mousePressed(MouseEvent evt) {}
+            
+            public void mouseReleased(MouseEvent evt) {}
+            
+            public void mouseEntered(MouseEvent evt) {}
+            
+            public void mouseExited(MouseEvent evt) {}
+            
+        });
     }
     
     /**
@@ -164,6 +182,38 @@ class ImagePanel extends JPanel{
     public void setImage(BufferedImage imagen){
         this.image = imagen;
         this.repaint();
+    }
+    
+    private void muestraInformacionRegion(int point_x, int point_y){
+        long area = 0;
+        long perimetro = 0;
+        int w = image.getWidth();
+        int h = image.getHeight();
+        int color = image.getRGB(point_x, point_y);
+        for(int x = 0; x < w; x ++){
+            for(int y = 0; y < h; y++){
+                if(image.getRGB(x, y) == color){
+                    area++;
+                    if(x != 0 && image.getRGB(x - 1, y) != color)
+                        perimetro++;
+                    else if (y != 0 && image.getRGB(x, y - 1) != color)
+                        perimetro++;
+                    else if (x != w - 1 && image.getRGB(x + 1, y) != color)
+                        perimetro++;
+                    else if (y != h - 1 && image.getRGB(x, y + 1) != color)
+                        perimetro++;
+                    else if(x != 0 && y != 0 && image.getRGB(x - 1, y - 1) != color)
+                        perimetro++;
+                    else if(x != 0 && y != h - 1 && image.getRGB(x - 1, y + 1) != color)
+                        perimetro++;
+                    else if(x != w - 1 && y != 0 && image.getRGB(x + 1, y - 1) != color)
+                        perimetro++;
+                    else if(x != w - 1 && y != h - 1 && image.getRGB(x + 1, y + 1) != color)
+                        perimetro++;
+                }
+            }
+        }
+        JOptionPane.showMessageDialog(this,"El area de la region es: " + area +" pixeles\nEl perimetro es : " + perimetro + " pixeles", "Medidas de la region", JOptionPane.INFORMATION_MESSAGE);
     }
     
     @Override
