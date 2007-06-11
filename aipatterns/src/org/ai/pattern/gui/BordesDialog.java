@@ -44,7 +44,7 @@ public class BordesDialog extends javax.swing.JDialog {
 
         jPanelOperador.setBorder(javax.swing.BorderFactory.createTitledBorder("Operador"));
 
-        jComboOperador.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Roberts", "Prewilt", "Sobel" }));
+        jComboOperador.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Roberts", "Prewitt", "Sobel" }));
 
         javax.swing.GroupLayout jPanelOperadorLayout = new javax.swing.GroupLayout(jPanelOperador);
         jPanelOperador.setLayout(jPanelOperadorLayout);
@@ -60,7 +60,7 @@ public class BordesDialog extends javax.swing.JDialog {
             .addGroup(jPanelOperadorLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jComboOperador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         jButtonAceptar.setText("Aceptar");
