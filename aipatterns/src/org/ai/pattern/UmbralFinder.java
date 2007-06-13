@@ -1,11 +1,3 @@
-/*
- * UmbralFinder.java
- *
- * Created on 26 mai 2007, 11:52:43
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
 
 package org.ai.pattern;
 
@@ -50,7 +42,6 @@ public class UmbralFinder {
     }
     
     private static int getPromedios(int inicio, int fin, long[] valores){
-        //System.out.println("Promedio: " + inicio + " " + fin);
         long suma = 0;
         long numpixeles = 0;
         long backsuma;

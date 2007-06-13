@@ -15,39 +15,24 @@ import static org.ai.pattern.Desaturador.*;
 /**
  *
  * @author yannart
- */;
- 
- public class Bordes implements Runnable{
+ */
+ public class Bordes extends Tratamiento{
      public static final int ROBERTS_OPERATOR = 0;
      public static final int PREWITT_OPERATOR = 1;
      public static final int SOBEL_OPERATOR = 2;
-     private BufferedImage imagen;
-     private Filtrable parent;
-     private Thread thread;
-     private int operador;
-     
+     private int operador = ROBERTS_OPERATOR;
      
      public Bordes(Filtrable parent){
-         this.parent = parent;
+         super(parent);
      }
      
-     public void trazarbordes(BufferedImage imagen, int operador){
-         if(imagen == null){
-             parent.imagenFiltrada(null);
-         }
-         this.imagen = imagen;
-         this.operador = operador;
-         
-         thread = new Thread(this);
-         thread.start();
-     }
      
-     /* Posicion de los pixeles:
-      *      x  x  x
-      *      x  P  r
-      *      x  s  x
-      */
-     private void trazarBordesRoberts(){
+     private BufferedImage trazarBordesRoberts(){
+         /* Posicion de los pixeles:
+          *      x  x  x
+          *      x  P  r
+          *      x  s  x
+          */
          int w = imagen.getWidth();
          int h = imagen.getHeight();
          int[] rgbs = new int[w*h];
@@ -80,10 +65,10 @@ import static org.ai.pattern.Desaturador.*;
              }
          }
          
-         parent.imagenFiltrada(imagen, "Trazado de bordes con el operador Roberts en");
+         return imagen;
      }
      
-     private void trazarBordesPrewitt(){
+     private BufferedImage trazarBordesPrewitt(){
          int w = imagen.getWidth();
          int h = imagen.getHeight();
          int[] rgbs = new int[w*h];
@@ -151,10 +136,10 @@ import static org.ai.pattern.Desaturador.*;
              }
          }
          
-         parent.imagenFiltrada(imagen, "Trazado de bordes con el operador Prewitt en");
+         return imagen;
      }
      
-     private void trazarBordesSobel(){
+     private BufferedImage trazarBordesSobel(){
          int w = imagen.getWidth();
          int h = imagen.getHeight();
          int[] rgbs = new int[w*h];
@@ -222,25 +207,40 @@ import static org.ai.pattern.Desaturador.*;
              }
          }
          
-         parent.imagenFiltrada(imagen, "Trazado de bordes con el operador Sobel en");
+         return imagen;
+     }
+     
+     @Override
+     BufferedImage tratamientoImagen(){
+         switch(operador){
+         case ROBERTS_OPERATOR:
+             return trazarBordesRoberts();
+         case PREWITT_OPERATOR:
+             return trazarBordesPrewitt();
+         case SOBEL_OPERATOR:
+             return trazarBordesSobel();
+         }
+         return null;
+     }
+     
+     @Override
+     String getMensajeExito() {
+         switch(operador){
+         case ROBERTS_OPERATOR:
+             return "Trazado de bordes con el operador Roberts en";
+         case PREWITT_OPERATOR:
+             return "Trazado de bordes con el operador Prewitt en";
+         case SOBEL_OPERATOR:
+             return "Trazado de bordes con el operador Sobel en";
+         }
+         return null;
+     }
+     
+     public void setOperador(int operador) {
+         this.operador = operador;
      }
      
      private int hipotenusaColor(int grisPixel, int grisR, int grisS){
          return (int) Math.sqrt((grisR - grisPixel) * (grisR - grisPixel) + (grisS - grisPixel) * (grisS - grisPixel));
      }
-     
-     public void run() {
-         switch(operador){
-         case ROBERTS_OPERATOR:
-             trazarBordesRoberts();
-             break;
-         case PREWITT_OPERATOR:
-             trazarBordesPrewitt();
-             break;
-         case SOBEL_OPERATOR:
-             trazarBordesSobel();
-             break;
-         }
-     }
-     
  }
