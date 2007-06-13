@@ -8,34 +8,16 @@ import java.util.Random;
  *
  * @author yannart
  */
-public class Regiones implements Runnable{
+public class Regiones extends Tratamiento{
     
-    private BufferedImage imagen;
-    private Filtrable parent;
-    private Thread thread;
-    private int pasadas;
+    private int pasadas = 4;
     
     public Regiones(Filtrable parent){
-        this.parent = parent;
+        super(parent);
     }
     
-    public void regionalizar(BufferedImage imagen){
-        regionalizar(imagen, 10);
-    }
-    
-    public void regionalizar(BufferedImage imagen, int pasadas){
-        
-        if(imagen == null){
-            parent.imagenFiltrada(null);
-        }
-        this.imagen = imagen;
-        this.pasadas = pasadas;
-        
-        thread = new Thread(this);
-        thread.start();
-    }
-    
-    public void run() {
+    @Override
+    BufferedImage tratamientoImagen() {
         int w = imagen.getWidth();
         int h = imagen.getHeight();
         int[] rgbs = new int[w*h];
@@ -176,7 +158,16 @@ public class Regiones implements Runnable{
         }
         
         imagen.setRGB(0, 0, w, h, rgbs, 0, w);
-        parent.imagenFiltrada(imagen, "Regiones detectadas en");
+        return imagen;
+    }
+    
+    @Override
+    String getMensajeExito() {
+        return "Regiones detectadas en";
+    }
+    
+    public void setPasadas(int pasadas) {
+        this.pasadas = pasadas;
     }
 }
 

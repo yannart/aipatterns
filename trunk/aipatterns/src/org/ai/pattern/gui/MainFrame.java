@@ -389,7 +389,7 @@ private void jMenuItemNegativoMousePressed(java.awt.event.MouseEvent evt) {//GEN
     BufferedImage imagen = getImagenActual();
     if(imagen != null){
         this.pausar(true);
-        negativo.negativo(imagen);
+        negativo.tratarImagen(imagen);
     }
 }//GEN-LAST:event_jMenuItemNegativoMousePressed
 
@@ -501,7 +501,8 @@ public void filtrar(float[] matriz){
     BufferedImage bufferedImage = getImagenActual();
     if(bufferedImage != null){
         this.pausar(true);
-        filtro.filtrar(bufferedImage, matriz);
+        filtro.setMatriz(matriz);
+        filtro.tratarImagen(bufferedImage);
     }
 }
 
@@ -526,7 +527,8 @@ public void umbralizar(int umbral_val){
     if(bufferedImage != null){
         setUmbralActual(umbral_val);
         this.pausar(true);
-        umbral.umbralizar(bufferedImage, umbral_val);
+        umbral.setUmbral(umbral_val);
+        umbral.tratarImagen(bufferedImage);
     }
 }
 
@@ -538,7 +540,8 @@ public void regionalizar(int pasadas){
     BufferedImage imagen = getImagenActual();
     if(imagen != null){
         this.pausar(true);
-        regiones.regionalizar(imagen, pasadas);
+        regiones.setPasadas(pasadas);
+        regiones.tratarImagen(imagen);
     }
 }
 
@@ -550,7 +553,8 @@ public void bordear(int operador){
     BufferedImage imagen = getImagenActual();
     if(imagen != null){
         this.pausar(true);
-        bordes.trazarbordes(imagen, operador);
+        bordes.setOperador(operador);
+        bordes.tratarImagen(imagen);
     }
 }
 
