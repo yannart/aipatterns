@@ -18,14 +18,16 @@ import java.io.Serializable;
  */
 public class ImagenSerializable implements Serializable{
     int [] rgbs;
+    int w;
+    int h;
     
     public ImagenSerializable(){
         
     }
     
     public ImagenSerializable(BufferedImage imagen){
-        int w = imagen.getWidth();
-        int h = imagen.getHeight();
+        w = imagen.getWidth();
+        h = imagen.getHeight();
         rgbs = new int[w * h];
         imagen.getRGB(0,0,w,h,rgbs,0,w);
     }
@@ -40,12 +42,13 @@ public class ImagenSerializable implements Serializable{
     
     /**
      *
-     * @param imagen
+     * @return 
      */
-    public void setBufferedImageData(BufferedImage imagen){
-        int w = imagen.getWidth();
-        int h = imagen.getHeight();
-        if(rgbs != null)
+    public BufferedImage getBufferedImageData(){
+        BufferedImage imagen = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        if(rgbs != null){
             imagen.setRGB(0, 0, w, h, rgbs, 0, w);
+        }
+        return imagen;
     }
 }

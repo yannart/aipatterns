@@ -1,8 +1,3 @@
-/*
- * ImageFrame.java
- *
- * Created on 9 mai 2007, 21:35
- */
 
 package org.ai.pattern.gui;
 
@@ -11,10 +6,9 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import org.ai.pattern.ImageLoader;
+import org.ai.pattern.Imagen;
 
 /**
  *
@@ -23,21 +17,18 @@ import org.ai.pattern.ImageLoader;
 public class ImageFrame extends javax.swing.JInternalFrame {
     
     private ImagePanel imagepanel;
-    private int umbral = 127;
-    private int id;
-    private int nivelhistorial = -1;
-    private int maxnivelhistorial = -1;
+    private Imagen imagen;
     
     /** Creates new form ImageFrame
-     * @param file
-     * @param id
+     * @param imagen 
+     * 
      */
-    public ImageFrame(File file, int id) {
-        this.id = id;
+    public ImageFrame(Imagen imagen) {
+        this.imagen = imagen;
         initComponents();
-        this.setTitle(file.getName());
+        this.setTitle(imagen.getName());
         
-        BufferedImage image = ImageLoader.loadImage(file);
+        BufferedImage image = imagen.getImagen();
         
         imagepanel = new ImagePanel(image);
         jScrollPaneContenedor.setViewportView(imagepanel);
@@ -46,41 +37,14 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         } catch (java.beans.PropertyVetoException e) {}
     }
     
-    public BufferedImage getImage(){
-        return imagepanel.getImage();
+    public void updateImage(){
+        imagepanel.setImage(imagen.getImagen());
     }
     
-    public void setImage(BufferedImage image){
-        imagepanel.setImage(image);
+    public Imagen getImagen(){
+        return imagen;
     }
-    
-    public int getUmbral() {
-        return umbral;
-    }
-    
-    public void setUmbral(int umbral) {
-        this.umbral = umbral;
-    }
-    
-    public int getId(){
-        return id;
-    }
-    
-    public int getNivelHistorial(){
-        return nivelhistorial;
-    }
-    
-    public void setNivelHistorial(int nivel){
-        nivelhistorial = nivel;
-    }
-    
-    public int getMaxNivelHistorial() {
-        return maxnivelhistorial;
-    }
-    
-    public void setMaxNivelHistorial(int maxnivelhistorial) {
-        this.maxnivelhistorial = maxnivelhistorial;
-    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -130,8 +94,7 @@ public class ImageFrame extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
     
 private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
-    imagepanel.getImage().flush();
-    imagepanel = null;
+    imagen.remove();
     System.gc();
 }//GEN-LAST:event_formInternalFrameClosing
 
@@ -139,7 +102,6 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPaneContenedor;
     // End of variables declaration//GEN-END:variables
-    
 }
 
 /**
@@ -172,13 +134,7 @@ class ImagePanel extends JPanel{
         });
     }
     
-    /**
-     * @return Imagen contenida en el panel
-     */
-    public BufferedImage getImage(){
-        return image;
-    }
-    
+
     public void setImage(BufferedImage imagen){
         this.image = imagen;
         this.repaint();
@@ -190,6 +146,9 @@ class ImagePanel extends JPanel{
         int w = image.getWidth();
         int h = image.getHeight();
         int color = image.getRGB(point_x, point_y);
+        if((color & 0xFFFFFF) == 0){ 
+            return;
+        }
         for(int x = 0; x < w; x ++){
             for(int y = 0; y < h; y++){
                 if(image.getRGB(x, y) == color){

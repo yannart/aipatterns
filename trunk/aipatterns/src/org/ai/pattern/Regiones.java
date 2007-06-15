@@ -2,7 +2,13 @@
 package org.ai.pattern;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 /**
  *
@@ -25,7 +31,7 @@ public class Regiones extends Tratamiento{
         
         int colores = 1;
         int pixel;
-        int r = 0, s = 0, t = 0, u = 0;
+        int r, s, t, u;
         
         /* Posicion de los pixeles:
          *      s  r  u
@@ -127,7 +133,8 @@ public class Regiones extends Tratamiento{
         }
         
         //Ultima pasada
-        colores = 0;
+        Set <Integer> coloresSet = new HashSet <Integer> ();
+        int color = 0;
         for(int y = 0; y < h; y++){
             for(int x = 0; x < w; x++){
                 
@@ -142,8 +149,11 @@ public class Regiones extends Tratamiento{
                         pintado[pixel] = pintado[t];
                     }else{
                         if(pintado[pixel] == 0){
-                            pintado[pixel] = ((generator.nextInt(254) + 1) << 16) + ((generator.nextInt(254) + 1) << 8) + (generator.nextInt(254) + 1);
-                            colores++;
+                            do{
+                            color = generator.nextInt(16777215) + 1;
+                            }while(coloresSet.contains(color));
+                            pintado[pixel] = color;
+                            coloresSet.add(color);
                         }
                     }
                 }
