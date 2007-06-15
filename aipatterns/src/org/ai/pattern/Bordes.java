@@ -1,11 +1,3 @@
-/*
- * Bordes.java
- *
- * Created on 11 juin 2007, 10:10:43
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
 
 package org.ai.pattern;
 
@@ -241,6 +233,6 @@ import static org.ai.pattern.Desaturador.*;
      }
      
      private int hipotenusaColor(int grisPixel, int grisR, int grisS){
-         return (int) Math.sqrt((grisR - grisPixel) * (grisR - grisPixel) + (grisS - grisPixel) * (grisS - grisPixel));
+         return ((grisR - grisPixel) * (grisR - grisPixel) + (grisS - grisPixel) * (grisS - grisPixel));
      }
  }

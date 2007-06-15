@@ -1,11 +1,3 @@
-/*
- * HistoryManager.java
- *
- * Created on 6 juin 2007, 20:00:58
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
 
 package org.ai.pattern;
 
@@ -42,25 +34,51 @@ public class HistoryManager {
         }
     }
     
-    public void borrar(int id, int minnivel, int maxnivel){
+    public void borrar(Imagen imagen, int minnivel, int maxnivel){
         for(int i = minnivel; i <= maxnivel; i++){
-            File archivo = new File(creaNombreArchivo(id, i));
+            File archivo = new File(creaNombreArchivo(imagen.getId(), i));
             archivo.delete();
         }
     }
     
-    public void grab(int id,int nivel, BufferedImage imagen){
-        ImagenSerializable imagenserializable = new ImagenSerializable(imagen);
-        Grabber grabber = new Grabber(imagenserializable, creaNombreArchivo(id, nivel));
-        grabber.start();
+    public void borrar(Imagen imagen){
+        borrar(imagen, 0, imagen.getMaxnivelhistorial());
     }
     
-    public void load(int id, int nivel){
-        if(id < 0 || nivel < 0)
+    public void grab(Imagen imagen){
+        int nivel = imagen.getNivelhistorial() + 1;
+        ImagenSerializable imagenserializable = new ImagenSerializable(imagen.getImagen());
+        borrar(imagen, nivel, imagen.getMaxnivelhistorial());
+        Grabber grabber = new Grabber(imagenserializable, creaNombreArchivo(imagen.getId(), nivel));
+        grabber.start();
+        imagen.setMaxnivelhistorial(nivel);
+        imagen.setNivelhistorial(nivel);
+    }
+    
+    public void loadBefore(Imagen imagen){
+        if(imagen == null){
             return;
-        parent.pausar(true);
-        Loader loader = new Loader(creaNombreArchivo(id, nivel));
-        loader.start();
+        }
+        int nivel = imagen.getNivelhistorial() - 1;
+        if(nivel >=0){
+            parent.pausar(true);
+            Loader loader = new Loader(creaNombreArchivo(imagen.getId(), nivel));
+            loader.start();
+            imagen.setNivelhistorial(nivel);
+        }
+    }
+    
+    public void loadNext(Imagen imagen){
+        if(imagen == null){
+            return;
+        }
+        int nivel = imagen.getNivelhistorial() + 1;
+        if(nivel <= imagen.getMaxnivelhistorial()){
+            parent.pausar(true);
+            Loader loader = new Loader(creaNombreArchivo(imagen.getId(), nivel));
+            loader.start();
+            imagen.setNivelhistorial(nivel);
+        }
     }
     
     private String creaNombreArchivo(int id, int nivel){
@@ -84,16 +102,15 @@ public class HistoryManager {
                 in = new ObjectInputStream(fis);
                 imagenserializable = (ImagenSerializable)in.readObject();
                 in.close();
+                fis.close();
             } catch(IOException ex) {
                 ex.printStackTrace();
             } catch(ClassNotFoundException ex) {
                 ex.printStackTrace();
             } finally {
-                parent.pausar(false);
-                BufferedImage imagen = parent.getImagenActual();
-                imagenserializable.setBufferedImageData(imagen);
+                BufferedImage imagen = imagenserializable.getBufferedImageData();
                 parent.setImagenActual(imagen);
-                
+                parent.pausar(false);
             }
         }
     }
@@ -109,7 +126,6 @@ public class HistoryManager {
         
         @Override
         public void run(){
-            
             FileOutputStream fos = null;
             ObjectOutputStream out = null;
             try {
@@ -117,6 +133,7 @@ public class HistoryManager {
                 out = new ObjectOutputStream(fos);
                 out.writeObject(imagenserializable);
                 out.close();
+                fos.close();
             } catch(IOException ex) {
                 ex.printStackTrace();
             }

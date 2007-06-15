@@ -1,8 +1,3 @@
-/*
- * MainFrame.java
- *
- * Created on 9 mai 2007, 21:08
- */
 
 package org.ai.pattern.gui;
 
@@ -17,7 +12,8 @@ import org.ai.pattern.Cronometro;
 import org.ai.pattern.Filtrable;
 import org.ai.pattern.Filtro;
 import org.ai.pattern.Histograma;
-import org.ai.pattern.HistoryManager;
+import org.ai.pattern.Imagen;
+import org.ai.pattern.ImagenesManager;
 import org.ai.pattern.Negativo;
 import org.ai.pattern.Regiones;
 import org.ai.pattern.Umbral;
@@ -30,32 +26,26 @@ import org.ai.pattern.util.Utilities;
  */
 public class MainFrame extends javax.swing.JFrame implements Filtrable{
     
-    JFileChooser filechooser = new JpgFileChooser();
-    GlassPanelEspera glass;
-    Filtro filtro;
-    Umbral umbral;
-    Histograma histograma;
-    Regiones regiones;
-    Bordes bordes;
-    Negativo negativo;
-    FiltroDialog filtrodlg;
-    UmbralDialog umbraldlg;
-    HistogramaDialog histogramadlg;
-    RegionDialog regionesdlg;
-    BordesDialog bordesdlg;
-    int imagenframes_id = 0;
-    HistoryManager historymanager;
-    Cronometro cronometro;
-    boolean enpausa;
+    private JFileChooser filechooser;
+    private GlassPanelEspera glass;
+    private Filtro filtro;
+    private Umbral umbral;
+    private Histograma histograma;
+    private Regiones regiones;
+    private Bordes bordes;
+    private Negativo negativo;
+    private FiltroDialog filtrodlg;
+    private UmbralDialog umbraldlg;
+    private HistogramaDialog histogramadlg;
+    private RegionDialog regionesdlg;
+    private BordesDialog bordesdlg;
+    private Cronometro cronometro;
+    private boolean enpausa;
+    private ImagenesManager imagenesManager;
     
-    /** Creates new form MainFrame */
     public MainFrame() {
         initComponents();
         initOtherComponents();
-        historymanager = new HistoryManager(this);
-        cronometro = new Cronometro();
-        glass = new GlassPanelEspera();
-        glass.setGlassPane(this);
     }
     
     /** This method is called from within the constructor to
@@ -119,11 +109,6 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuItemAbrir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/abrir.png"))); // NOI18N
         jMenuItemAbrir.setText("Abrir");
-        jMenuItemAbrir.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jMenuItemAbrirMousePressed(evt);
-            }
-        });
         jMenuItemAbrir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemAbrirActionPerformed(evt);
@@ -135,11 +120,6 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuItemSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/quit.png"))); // NOI18N
         jMenuItemSalir.setText("Salir");
-        jMenuItemSalir.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jMenuItemSalirMousePressed(evt);
-            }
-        });
         jMenuItemSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemSalirActionPerformed(evt);
@@ -155,11 +135,6 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuItemDeshacer.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/edit-undo.png"))); // NOI18N
         jMenuItemDeshacer.setText("deshacer");
-        jMenuItemDeshacer.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jMenuItemDeshacerMousePressed(evt);
-            }
-        });
         jMenuItemDeshacer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemDeshacerActionPerformed(evt);
@@ -170,11 +145,6 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuItemRehacer.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemRehacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/edit-redo.png"))); // NOI18N
         jMenuItemRehacer.setText("rehacer");
-        jMenuItemRehacer.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jMenuItemRehacerMousePressed(evt);
-            }
-        });
         jMenuItemRehacer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemRehacerActionPerformed(evt);
@@ -190,11 +160,6 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuItemFiltrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemFiltrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/draw_pencil.png"))); // NOI18N
         jMenuItemFiltrar.setText("Aplicar Filtro");
-        jMenuItemFiltrar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jMenuItemFiltrarMousePressed(evt);
-            }
-        });
         jMenuItemFiltrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemFiltrarActionPerformed(evt);
@@ -204,11 +169,6 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
 
         jMenuItemNegativo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemNegativo.setText("Invertir Colores");
-        jMenuItemNegativo.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jMenuItemNegativoMousePressed(evt);
-            }
-        });
         jMenuItemNegativo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemNegativoActionPerformed(evt);
@@ -218,11 +178,6 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
 
         jMenuItemBordes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemBordes.setText("Trazar Bordes");
-        jMenuItemBordes.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jMenuItemBordesMousePressed(evt);
-            }
-        });
         jMenuItemBordes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemBordesActionPerformed(evt);
@@ -233,11 +188,6 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuItemHistograma.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemHistograma.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/histograma.png"))); // NOI18N
         jMenuItemHistograma.setText("Ver Histograma");
-        jMenuItemHistograma.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jMenuItemHistogramaMousePressed(evt);
-            }
-        });
         jMenuItemHistograma.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemHistogramaActionPerformed(evt);
@@ -248,11 +198,6 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuItemUmbralizar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemUmbralizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/umbralizar.png"))); // NOI18N
         jMenuItemUmbralizar.setText("Umbralizar");
-        jMenuItemUmbralizar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jMenuItemUmbralizarMousePressed(evt);
-            }
-        });
         jMenuItemUmbralizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemUmbralizarActionPerformed(evt);
@@ -263,11 +208,6 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuItemRegionalizar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemRegionalizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/regionalizar.png"))); // NOI18N
         jMenuItemRegionalizar.setText("Regionalizar");
-        jMenuItemRegionalizar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jMenuItemRegionalizarMousePressed(evt);
-            }
-        });
         jMenuItemRegionalizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemRegionalizarActionPerformed(evt);
@@ -283,11 +223,6 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuItemAbout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         jMenuItemAbout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/foco.png"))); // NOI18N
         jMenuItemAbout.setText("Acerca de...");
-        jMenuItemAbout.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jMenuItemAboutMousePressed(evt);
-            }
-        });
         jMenuItemAbout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemAboutActionPerformed(evt);
@@ -316,105 +251,111 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
 private void jMenuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAboutActionPerformed
     if(!enpausa){
-        jMenuItemAboutMousePressed(null);
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                (new AcercaDe(MainFrame.this, true)).setVisible(true);
+            }
+        });
     }
 }//GEN-LAST:event_jMenuItemAboutActionPerformed
 
 private void jMenuItemRegionalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRegionalizarActionPerformed
     if(!enpausa){
-        jMenuItemRegionalizarMousePressed(null);
+        Imagen imagen = getImagenActual();
+        if(imagen != null){
+            regionesdlg.setVisible(true);
+        }
     }
 }//GEN-LAST:event_jMenuItemRegionalizarActionPerformed
 
 private void jMenuItemUmbralizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemUmbralizarActionPerformed
     if(!enpausa){
-        jMenuItemUmbralizarMousePressed(null);
+        Imagen imagen = getImagenActual();
+        if(imagen != null){
+            umbraldlg.setUmbral(getUmbralActual());
+            umbraldlg.setVisible(true);
+        }
     }
 }//GEN-LAST:event_jMenuItemUmbralizarActionPerformed
 
 private void jMenuItemHistogramaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemHistogramaActionPerformed
     if(!enpausa){
-        jMenuItemHistogramaMousePressed(null);
+        Imagen imagen = getImagenActual();
+        if(imagen != null){
+            BufferedImage bufferedimage = getImagenActual().getImagen();
+            if(imagen != null){
+                this.pausar(true);
+                histograma.crearHistograma(bufferedimage);
+            }
+        }
     }
 }//GEN-LAST:event_jMenuItemHistogramaActionPerformed
 
 private void jMenuItemBordesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBordesActionPerformed
     if(!enpausa){
-        jMenuItemBordesMousePressed(null);
+        Imagen imagen = getImagenActual();
+        if(imagen != null){
+            bordesdlg.setVisible(true);
+        }
     }
 }//GEN-LAST:event_jMenuItemBordesActionPerformed
 
 private void jMenuItemNegativoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNegativoActionPerformed
     if(!enpausa){
-        jMenuItemNegativoMousePressed(null);
-    }  
+        Imagen imagen = getImagenActual();
+        if(imagen != null){
+            BufferedImage bufferedimage = imagen.getImagen();
+            this.pausar(true);
+            negativo.tratarImagen(bufferedimage);
+        }
+    }
 }//GEN-LAST:event_jMenuItemNegativoActionPerformed
 
 private void jMenuItemFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFiltrarActionPerformed
     if(!enpausa){
-        jMenuItemFiltrarMousePressed(null);
+        Imagen imagen = getImagenActual();
+        if(imagen != null){
+            filtrodlg.setVisible(true);
+        }
     }
 }//GEN-LAST:event_jMenuItemFiltrarActionPerformed
 
 private void jMenuItemRehacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRehacerActionPerformed
     if(!enpausa){
-        jMenuItemRehacerMousePressed(null);
+        Imagen imagen = getImagenActual();
+        if(imagen != null){
+            imagenesManager.loadSiguiente(imagen);
+        }
     }
 }//GEN-LAST:event_jMenuItemRehacerActionPerformed
 
 private void jMenuItemDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDeshacerActionPerformed
     if(!enpausa){
-        jMenuItemDeshacerMousePressed(null);
+        Imagen imagen = getImagenActual();
+        if(imagen != null){
+            imagenesManager.loadAnterior(imagen);
+        }
     }
 }//GEN-LAST:event_jMenuItemDeshacerActionPerformed
 
 private void jMenuItemSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSalirActionPerformed
-    if(!enpausa){
-        jMenuItemSalirMousePressed(null);
-    }
+    salir();
 }//GEN-LAST:event_jMenuItemSalirActionPerformed
 
-private void jMenuItemNegativoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemNegativoMousePressed
-    if(getSelectedFrame() == null){
-        showErrorAlert();
-        return;
-    }
-    
-    if(negativo == null){
-        negativo = new Negativo(this);
-    }
-    BufferedImage imagen = getImagenActual();
-    if(imagen != null){
-        this.pausar(true);
-        negativo.tratarImagen(imagen);
-    }
-}//GEN-LAST:event_jMenuItemNegativoMousePressed
-
-private void jMenuItemBordesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemBordesMousePressed
-    if(getSelectedFrame() == null){
-        showErrorAlert();
-        return;
-    }
-    
-    if(bordesdlg == null){
-        bordesdlg = new BordesDialog(this, true);
-    }
-    bordesdlg.setVisible(true);
-}//GEN-LAST:event_jMenuItemBordesMousePressed
-    
 private void jMenuItemAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAbrirActionPerformed
     openImageFile();
 }//GEN-LAST:event_jMenuItemAbrirActionPerformed
+
 private void openImageFile(){
     int returnVal = filechooser.showOpenDialog(this);
     
     if (returnVal == JFileChooser.APPROVE_OPTION) {
         File file = filechooser.getSelectedFile();
-        JInternalFrame internalframe = new ImageFrame(file, imagenframes_id);
-        imagenframes_id ++;
+        Imagen imagen = imagenesManager.createImagen(file);
+        JInternalFrame internalframe = new ImageFrame(imagen);
         jDesktopPane.add(internalframe);
         jDesktopPane.setSelectedFrame(internalframe);
         guardarUndo();
@@ -424,81 +365,9 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
     salir();
 }//GEN-LAST:event_formWindowClosing
 
-private void jMenuItemRehacerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemRehacerMousePressed
-    if(getSelectedFrame() == null){
-        showErrorAlert();
-        return;
-    }
-    int nivel = getNivelHistorialActual() + 1;
-    int maxnivel = getSelectedFrame().getMaxNivelHistorial();
-    if(nivel > maxnivel)
-        return;
-    historymanager.load(getIdActual(), nivel);
-    setNivelHistorialActual(nivel);
-}//GEN-LAST:event_jMenuItemRehacerMousePressed
-
-private void jMenuItemDeshacerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemDeshacerMousePressed
-    if(getSelectedFrame() == null){
-        showErrorAlert();
-        return;
-    }
-    
-    int nivel = getNivelHistorialActual() - 1;
-    if(nivel < 0)
-        return;
-    historymanager.load(getIdActual(), nivel);
-    setNivelHistorialActual(nivel);
-}//GEN-LAST:event_jMenuItemDeshacerMousePressed
-
-private void jMenuItemRegionalizarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemRegionalizarMousePressed
-    if(getSelectedFrame() == null){
-        showErrorAlert();
-        return;
-    }
-    
-    if(regionesdlg == null){
-        regionesdlg = new RegionDialog(this, true);
-    }
-    
-    regionesdlg.setVisible(true);
-}//GEN-LAST:event_jMenuItemRegionalizarMousePressed
-
-private void jMenuItemHistogramaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemHistogramaMousePressed
-    if(getSelectedFrame() == null){
-        showErrorAlert();
-        return;
-    }
-    
-    if(histograma == null){
-        histograma = new Histograma(this);
-    }
-    BufferedImage imagen = getImagenActual();
-    if(imagen != null){
-        this.pausar(true);
-        histograma.crearHistograma(imagen);
-    }
-}//GEN-LAST:event_jMenuItemHistogramaMousePressed
-
-private void jMenuItemUmbralizarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemUmbralizarMousePressed
-    if(getSelectedFrame() == null){
-        showErrorAlert();
-        return;
-    }
-    
-    if(umbraldlg == null){
-        umbraldlg = new UmbralDialog(this, true);
-    }
-    umbraldlg.setUmbral(getUmbralActual());
-    umbraldlg.setVisible(true);
-}//GEN-LAST:event_jMenuItemUmbralizarMousePressed
-
 
 public void filtrar(float[] matriz){
-    if(filtro == null){
-        filtro = new Filtro(this);
-    }
-    
-    BufferedImage bufferedImage = getImagenActual();
+    BufferedImage bufferedImage = getImagenActual().getImagen();
     if(bufferedImage != null){
         this.pausar(true);
         filtro.setMatriz(matriz);
@@ -507,23 +376,13 @@ public void filtrar(float[] matriz){
 }
 
 public void verHistograma(long[] valores, long maxnum){
-    if(histogramadlg == null){
-        histogramadlg = new HistogramaDialog(this, true);
-    }
-    
     histogramadlg.setValues(valores, maxnum, getUmbralActual());
-    
     this.pausar(false, "Histograma trazado en");
-    
     histogramadlg.setVisible(true);
 }
 
 public void umbralizar(int umbral_val){
-    if(umbral == null){
-        umbral = new Umbral(this);
-    }
-    
-    BufferedImage bufferedImage = getImagenActual();
+    BufferedImage bufferedImage = getImagenActual().getImagen();
     if(bufferedImage != null){
         setUmbralActual(umbral_val);
         this.pausar(true);
@@ -533,11 +392,7 @@ public void umbralizar(int umbral_val){
 }
 
 public void regionalizar(int pasadas){
-    if(regiones == null){
-        regiones = new Regiones(this);
-    }
-    
-    BufferedImage imagen = getImagenActual();
+    BufferedImage imagen = getImagenActual().getImagen();
     if(imagen != null){
         this.pausar(true);
         regiones.setPasadas(pasadas);
@@ -546,11 +401,7 @@ public void regionalizar(int pasadas){
 }
 
 public void bordear(int operador){
-    if(bordes == null){
-        bordes = new Bordes(this);
-    }
-    
-    BufferedImage imagen = getImagenActual();
+    BufferedImage imagen = getImagenActual().getImagen();
     if(imagen != null){
         this.pausar(true);
         bordes.setOperador(operador);
@@ -563,68 +414,48 @@ public void imagenFiltrada(BufferedImage image){
 }
 
 public void imagenFiltrada(BufferedImage image, String mensaje){
-    guardarUndo(image);
-    this.pausar(false, mensaje);
     if(image != null){
         setImagenActual(image);
+        guardarUndo();
     }
+    this.pausar(false, mensaje);
 }
 
 public int getUmbralActual(){
-    if(getSelectedFrame() == null){
-        showErrorAlert();
+    Imagen imagen = getImagenActual();
+    if(imagen == null){
         return -1;
     }
-    
-    return getSelectedFrame().getUmbral();
-}
-
-public int getIdActual(){
-    if(getSelectedFrame() == null){
-        return -1;
-    }
-    
-    return getSelectedFrame().getId();
-}
-
-public int getNivelHistorialActual(){
-    if(getSelectedFrame() == null){
-        return -1;
-    }
-    
-    return getSelectedFrame().getNivelHistorial();
-}
-
-public void setNivelHistorialActual(int nivel){
-    if(getSelectedFrame() == null){
-        return;
-    }
-    
-    getSelectedFrame().setNivelHistorial(nivel);
+    return imagen.getUmbral();
 }
 
 public void setUmbralActual(int umbral){
-    if(getSelectedFrame() != null){
-        getSelectedFrame().setUmbral(umbral);
+    Imagen imagen = getImagenActual();
+    if(imagen != null){
+        imagen.setUmbral(umbral);
     }
 }
 
-public BufferedImage getImagenActual(){
-    if(getSelectedFrame() == null){
+public Imagen getImagenActual(){
+    ImageFrame imageFrame = (ImageFrame) jDesktopPane.getSelectedFrame();
+    if(imageFrame == null){
         showErrorAlert();
         return null;
     }
-    return getSelectedFrame().getImage();
+    return imageFrame.getImagen();
 }
 
-public void setImagenActual(BufferedImage imagen){
-    if(getSelectedFrame() != null){
-        getSelectedFrame().setImage(imagen);
+public void setImagenActual(BufferedImage bufferedimage){
+    Imagen imagen = getImagenActual();
+    if(imagen != null){
+        imagen.setImagen(bufferedimage);
+        actualizaFrame();
     }
 }
 
-private ImageFrame getSelectedFrame(){
-    return (ImageFrame) jDesktopPane.getSelectedFrame();
+private void actualizaFrame(){
+    ImageFrame imageFrame = (ImageFrame) jDesktopPane.getSelectedFrame();
+    imageFrame.updateImage();
 }
 
 public void pausar(final boolean enpausa){
@@ -644,15 +475,8 @@ public void pausar(final boolean enpausa, String mensaje){
 }
 
 private void guardarUndo(){
-    guardarUndo(getImagenActual());
-}
-
-private void guardarUndo(BufferedImage imagen){
-    int nivel = getNivelHistorialActual();
-    historymanager.borrar(getIdActual(), nivel + 1, getSelectedFrame().getMaxNivelHistorial());
-    historymanager.grab(getIdActual(), nivel + 1, imagen);
-    setNivelHistorialActual(nivel + 1);
-    getSelectedFrame().setMaxNivelHistorial(nivel + 1);
+    Imagen imagenactual = getImagenActual();
+    imagenesManager.grabar(imagenactual);
 }
 
 private void showErrorAlert(){
@@ -660,39 +484,28 @@ private void showErrorAlert(){
 }
 
 public void salir(){
-    historymanager.borrarCarpeta();
+    imagenesManager.limpiar();
     this.dispose();
     System.exit(0);
 }
 
-private void jMenuItemFiltrarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemFiltrarMousePressed
-    if(getSelectedFrame() == null){
-        showErrorAlert();
-        return;
-    }
-    
-    if(filtrodlg == null){
-        filtrodlg = new FiltroDialog(this, true);
-    }
-    filtrodlg.setVisible(true);
-}//GEN-LAST:event_jMenuItemFiltrarMousePressed
-
-private void jMenuItemAboutMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemAboutMousePressed
-    EventQueue.invokeLater(new Runnable() {
-        public void run() {
-            (new AcercaDe(MainFrame.this, true)).setVisible(true);
-        }
-    });
-}//GEN-LAST:event_jMenuItemAboutMousePressed
-
-private void jMenuItemAbrirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemAbrirMousePressed
-    openImageFile();
-}//GEN-LAST:event_jMenuItemAbrirMousePressed
-
-private void jMenuItemSalirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemSalirMousePressed
-    salir();
-}//GEN-LAST:event_jMenuItemSalirMousePressed
 private void initOtherComponents(){
+    imagenesManager = new ImagenesManager(this);
+    filechooser = new JpgFileChooser();
+    cronometro = new Cronometro();
+    glass = new GlassPanelEspera();
+    glass.setGlassPane(this);
+    negativo = new Negativo(this);
+    filtrodlg = new FiltroDialog(this, true);
+    bordesdlg = new BordesDialog(this, true);
+    bordes = new Bordes(this);
+    regionesdlg = new RegionDialog(this, true);
+    regiones = new Regiones(this);
+    histogramadlg = new HistogramaDialog(this, true);
+    histograma = new Histograma(this);
+    filtro = new Filtro(this);
+    umbraldlg = new UmbralDialog(this, true);
+    umbral = new Umbral(this);
     Utilities.setCentered(this);
 }
 

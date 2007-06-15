@@ -1,11 +1,3 @@
-/*
- * Desaturador.java
- *
- * Created on 11 juin 2007, 10:23:52
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
 
 package org.ai.pattern;
 
