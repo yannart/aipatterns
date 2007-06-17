@@ -33,13 +33,6 @@ public class Adelgazamiento extends Tratamiento{
             int miny = region.getMiny();
             int maxx = region.getMaxx();
             int maxy = region.getMaxy();
-                       
-            //Region
-            for(int y = miny; y <= maxy; y++){
-                for(int x = minx; x <= maxx; x++){
-                    int pixel = rgbs[x + y* w];
-                }
-            }
             
             //ITERACIONES
             do{
@@ -58,10 +51,6 @@ public class Adelgazamiento extends Tratamiento{
                             continue;
                         }
                         set8Vecinos(vecinos, x, y, w, rgbs, minx, maxx, miny, maxy);
-                        for(int i = 0; i < vecinos.length; i++){
-                            System.out.print(" ");
-                            System.out.print(Integer.toHexString(vecinos[i]));
-                        }
                         if(cumpleCondicionesItera1(pixel, vecinos)){
                             pixelesBorrar.add(new Punto(x, y));
                         }
