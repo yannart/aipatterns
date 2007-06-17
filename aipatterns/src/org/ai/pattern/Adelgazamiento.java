@@ -27,12 +27,19 @@ public class Adelgazamiento extends Tratamiento{
         List <Punto> pixelesBorrar = new ArrayList <Punto> ();
         
         for(Region region: regiones.values()){
-            int borrados;
+            long borrados;
             int color = region.getColor();
             int minx = region.getMinx();
             int miny = region.getMiny();
             int maxx = region.getMaxx();
             int maxy = region.getMaxy();
+            
+            //Region
+            for(int y = miny; y <= maxy; y++){
+                for(int x = minx; x <= maxx; x++){
+                    int pixel = rgbs[x + y* w];
+                }
+            }
             
             //ITERACIONES
             do{
@@ -44,13 +51,17 @@ public class Adelgazamiento extends Tratamiento{
              */
                 //Iteracion 1
                 pixelesBorrar.clear();
-                for(int x = minx; x < maxx; x++){
-                    for(int y = miny; y < maxy; y++){
+                for(int y = miny; y <= maxy; y++){
+                    for(int x = minx; x <= maxx; x++){
                         int pixel = rgbs[x + y* w];
                         if((pixel & 0x00FFFFFF) != color){
                             continue;
                         }
                         set8Vecinos(vecinos, x, y, w, rgbs, minx, maxx, miny, maxy);
+                        for(int i = 0; i < vecinos.length; i++){
+                            System.out.print(" ");
+                            System.out.print(Integer.toHexString(vecinos[i]));
+                        }
                         if(cumpleCondicionesItera1(pixel, vecinos)){
                             pixelesBorrar.add(new Punto(x, y));
                         }
@@ -64,8 +75,8 @@ public class Adelgazamiento extends Tratamiento{
                 
                 //Iteracion 2
                 pixelesBorrar.clear();
-                for(int x = minx; x < maxx; x++){
-                    for(int y = miny; y < maxy; y++){
+                for(int x = minx; x <= maxx; x++){
+                    for(int y = miny; y <= maxy; y++){
                         int pixel = rgbs[x + y* w];
                         if(pixel != (color & 0x00FFFFFF)){
                             continue;
@@ -95,7 +106,7 @@ public class Adelgazamiento extends Tratamiento{
                 vecinos[7] = 0;
             }
             
-            if(y < maxy - 1){
+            if(y < maxy){
                 vecinos[5] = rgbs[x - 1 + (y + 1)* w];
             }else{
                 vecinos[5] = 0;
@@ -106,7 +117,7 @@ public class Adelgazamiento extends Tratamiento{
             vecinos[7] = 0;
         }
         
-        if(x < maxx - 1){
+        if(x < maxx){
             vecinos[2] = rgbs[x + 1 + y * w];
             if(y > miny){
                 vecinos[1] = rgbs[x + 1 + (y - 1)* w];
@@ -114,7 +125,7 @@ public class Adelgazamiento extends Tratamiento{
                 vecinos[1] = 0;
             }
             
-            if(y < maxy - 1){
+            if(y < maxy){
                 vecinos[3] = rgbs[x + 1 + (y + 1)* w];
             }else{
                 vecinos[3] = 0;
@@ -131,7 +142,7 @@ public class Adelgazamiento extends Tratamiento{
             vecinos[0] = 0;
         }
         
-        if(y < maxy - 1){
+        if(y < maxy){
             vecinos[4] = rgbs[x + (y + 1) * w];
         }else{
             vecinos[4] = 0;
