@@ -17,15 +17,15 @@ public class Umbral extends Tratamiento{
     }
     
     @Override
-    BufferedImage tratamientoImagen() {
+    void tratamientoImagen() {
         if(umbral < 0 || umbral > 255){
-            return null;
+            return;
         }
-        
-        int w = imagen.getWidth();
-        int h = imagen.getHeight();
+        BufferedImage bufferedImage = imagen.getImagen();
+        int w = bufferedImage.getWidth();
+        int h = bufferedImage.getHeight();
         int[] rgbs = new int[w*h];
-        imagen.getRGB(0,0,w,h,rgbs,0,w);
+        bufferedImage.getRGB(0,0,w,h,rgbs,0,w);
         
         int pixel;
         int posicion;
@@ -43,8 +43,7 @@ public class Umbral extends Tratamiento{
             }
         }
         
-        imagen.setRGB(0, 0, w, h, rgbs, 0, w);
-        return imagen;
+        bufferedImage.setRGB(0, 0, w, h, rgbs, 0, w);
     }
     
     @Override

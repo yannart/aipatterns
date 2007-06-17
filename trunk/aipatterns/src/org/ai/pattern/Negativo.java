@@ -15,11 +15,12 @@ import org.ai.pattern.Desaturador;
      }
      
      @Override
-     public BufferedImage tratamientoImagen() {
-         int w = imagen.getWidth();
-         int h = imagen.getHeight();
+     public void tratamientoImagen() {
+         BufferedImage bufferedImage = imagen.getImagen();
+         int w = bufferedImage.getWidth();
+         int h = bufferedImage.getHeight();
          int[] rgbs = new int[w*h];
-         imagen.getRGB(0,0,w,h,rgbs,0,w);
+         bufferedImage.getRGB(0,0,w,h,rgbs,0,w);
          int posicion;
          for(int y = 0; y < h; y++){
              for(int x =0; x < w; x++){
@@ -28,8 +29,7 @@ import org.ai.pattern.Desaturador;
              }
          }
          
-         imagen.setRGB(0, 0, w, h, rgbs, 0, w);
-         return imagen;
+         bufferedImage.setRGB(0, 0, w, h, rgbs, 0, w);
      }
      
      @Override

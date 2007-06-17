@@ -1,11 +1,3 @@
-/*
- * ImagenSerializable.java
- *
- * Created on 6 juin 2007, 19:53:57
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
 
 package org.ai.pattern;
 
