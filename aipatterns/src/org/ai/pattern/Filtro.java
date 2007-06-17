@@ -17,13 +17,14 @@ public class Filtro extends Tratamiento{
     }
     
     @Override
-    BufferedImage tratamientoImagen() {
+    void tratamientoImagen() {
+        BufferedImage bufferedImage = imagen.getImagen();
         int lado_matriz = (int) sqrt(matriz.length);
         java.awt.image.BufferedImageOp op = new java.awt.image.ConvolveOp(new java.awt.image.Kernel(lado_matriz, lado_matriz, matriz));
-        java.awt.image.BufferedImage nuevaImagen = op.filter(imagen, null);
+        java.awt.image.BufferedImage nuevaImagen = op.filter(bufferedImage, null);
         
-        imagen.flush();
-        return nuevaImagen;
+        bufferedImage.flush();
+        imagen.setImagen(nuevaImagen);
     }
     
     @Override

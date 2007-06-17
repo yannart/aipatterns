@@ -7,6 +7,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import org.ai.pattern.Adelgazamiento;
 import org.ai.pattern.Bordes;
 import org.ai.pattern.Cronometro;
 import org.ai.pattern.Filtrable;
@@ -34,6 +35,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
     private Regiones regiones;
     private Bordes bordes;
     private Negativo negativo;
+    private Adelgazamiento adelgazamiento;
     private FiltroDialog filtrodlg;
     private UmbralDialog umbraldlg;
     private HistogramaDialog histogramadlg;
@@ -74,6 +76,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuItemHistograma = new javax.swing.JMenuItem();
         jMenuItemUmbralizar = new javax.swing.JMenuItem();
         jMenuItemRegionalizar = new javax.swing.JMenuItem();
+        jMenuItemAdelgazar = new javax.swing.JMenuItem();
         jMenuAyuda = new javax.swing.JMenu();
         jMenuItemAbout = new javax.swing.JMenuItem();
 
@@ -215,6 +218,15 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         });
         jMenuImagen.add(jMenuItemRegionalizar);
 
+        jMenuItemAdelgazar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemAdelgazar.setText("Adelgazar");
+        jMenuItemAdelgazar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAdelgazarActionPerformed(evt);
+            }
+        });
+        jMenuImagen.add(jMenuItemAdelgazar);
+
         jMenuBar1.add(jMenuImagen);
 
         jMenuAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/help.png"))); // NOI18N
@@ -252,6 +264,16 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
+private void jMenuItemAdelgazarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAdelgazarActionPerformed
+    if(!enpausa){
+        Imagen imagen = getImagenActual();
+        if(imagen != null){
+            this.pausar(true);
+            adelgazamiento.tratarImagen(imagen);
+        }
+    }
+}//GEN-LAST:event_jMenuItemAdelgazarActionPerformed
+
 private void jMenuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAboutActionPerformed
     if(!enpausa){
         EventQueue.invokeLater(new Runnable() {
@@ -307,9 +329,8 @@ private void jMenuItemNegativoActionPerformed(java.awt.event.ActionEvent evt) {/
     if(!enpausa){
         Imagen imagen = getImagenActual();
         if(imagen != null){
-            BufferedImage bufferedimage = imagen.getImagen();
             this.pausar(true);
-            negativo.tratarImagen(bufferedimage);
+            negativo.tratarImagen(imagen);
         }
     }
 }//GEN-LAST:event_jMenuItemNegativoActionPerformed
@@ -367,11 +388,11 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
 
 
 public void filtrar(float[] matriz){
-    BufferedImage bufferedImage = getImagenActual().getImagen();
-    if(bufferedImage != null){
+    Imagen imagen = getImagenActual();
+    if(imagen != null){
         this.pausar(true);
         filtro.setMatriz(matriz);
-        filtro.tratarImagen(bufferedImage);
+        filtro.tratarImagen(imagen);
     }
 }
 
@@ -382,17 +403,17 @@ public void verHistograma(long[] valores, long maxnum){
 }
 
 public void umbralizar(int umbral_val){
-    BufferedImage bufferedImage = getImagenActual().getImagen();
-    if(bufferedImage != null){
+    Imagen imagen = getImagenActual();
+    if(imagen != null){
         setUmbralActual(umbral_val);
         this.pausar(true);
         umbral.setUmbral(umbral_val);
-        umbral.tratarImagen(bufferedImage);
+        umbral.tratarImagen(imagen);
     }
 }
 
 public void regionalizar(int pasadas){
-    BufferedImage imagen = getImagenActual().getImagen();
+    Imagen imagen = getImagenActual();
     if(imagen != null){
         this.pausar(true);
         regiones.setPasadas(pasadas);
@@ -401,7 +422,7 @@ public void regionalizar(int pasadas){
 }
 
 public void bordear(int operador){
-    BufferedImage imagen = getImagenActual().getImagen();
+    Imagen imagen = getImagenActual();
     if(imagen != null){
         this.pausar(true);
         bordes.setOperador(operador);
@@ -409,13 +430,13 @@ public void bordear(int operador){
     }
 }
 
-public void imagenFiltrada(BufferedImage image){
-    imagenFiltrada(image, "Imagen filtrada en");
+public void imagenFiltrada(Imagen imagen){
+    imagenFiltrada(imagen, "Imagen filtrada en");
 }
 
-public void imagenFiltrada(BufferedImage image, String mensaje){
-    if(image != null){
-        setImagenActual(image);
+public void imagenFiltrada(Imagen imagen, String mensaje){
+    if(imagen.getImagen() != null){
+        setImagenActual(imagen.getImagen());
         guardarUndo();
     }
     this.pausar(false, mensaje);
@@ -503,6 +524,7 @@ private void initOtherComponents(){
     regiones = new Regiones(this);
     histogramadlg = new HistogramaDialog(this, true);
     histograma = new Histograma(this);
+    adelgazamiento = new Adelgazamiento(this);
     filtro = new Filtro(this);
     umbraldlg = new UmbralDialog(this, true);
     umbral = new Umbral(this);
@@ -519,6 +541,7 @@ private void initOtherComponents(){
     private javax.swing.JMenu jMenuImagen;
     private javax.swing.JMenuItem jMenuItemAbout;
     private javax.swing.JMenuItem jMenuItemAbrir;
+    private javax.swing.JMenuItem jMenuItemAdelgazar;
     private javax.swing.JMenuItem jMenuItemBordes;
     private javax.swing.JMenuItem jMenuItemDeshacer;
     private javax.swing.JMenuItem jMenuItemFiltrar;

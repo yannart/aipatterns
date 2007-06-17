@@ -2,13 +2,9 @@
 package org.ai.pattern;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 /**
  *
@@ -23,11 +19,12 @@ public class Regiones extends Tratamiento{
     }
     
     @Override
-    BufferedImage tratamientoImagen() {
-        int w = imagen.getWidth();
-        int h = imagen.getHeight();
+    void tratamientoImagen() {
+        BufferedImage bufferedImage = imagen.getImagen();
+        int w = bufferedImage.getWidth();
+        int h = bufferedImage.getHeight();
         int[] rgbs = new int[w*h];
-        imagen.getRGB(0,0,w,h,rgbs,0,w);
+        bufferedImage.getRGB(0,0,w,h,rgbs,0,w);
         
         int colores = 1;
         int pixel;
@@ -64,7 +61,7 @@ public class Regiones extends Tratamiento{
                     r = 0;
                     u = 0;
                 }
-                pixel = imagen.getRGB(x,y) & 0x00FFFFFF;
+                pixel = bufferedImage.getRGB(x,y) & 0x00FFFFFF;
                 
                 //System.out.println("s: " + s + " r: " + r + " t: " + t + " u:" + u);
                 
@@ -133,42 +130,66 @@ public class Regiones extends Tratamiento{
         }
         
         //Ultima pasada
-        Set <Integer> coloresSet = new HashSet <Integer> ();
+        Map <Integer, Region> regiones = new HashMap <Integer, Region> ();
+        Region region;
         int color = 0;
         for(int y = 0; y < h; y++){
             for(int x = 0; x < w; x++){
-                
-                if(x != w - 1){
-                    t = rgbs[y * w + (x + 1)];
-                }else{
-                    t = 0;
-                }
                 pixel = rgbs[y * w + x];
                 if(pixel != 0){
-                    if(pintado[t] != 0 && pixel != t){
-                        pintado[pixel] = pintado[t];
-                    }else{
-                        if(pintado[pixel] == 0){
-                            do{
+                    if(pintado[pixel] == 0){
+                        do{
                             color = generator.nextInt(16777215) + 1;
-                            }while(coloresSet.contains(color));
-                            pintado[pixel] = color;
-                            coloresSet.add(color);
+                        }while(regiones.containsKey(color));
+                        pintado[pixel] = color;
+                        rgbs[y * w + x] = color;
+                        region = new Region();
+                        region.setColor(color);
+                        region.setMaxx(x);
+                        region.setMaxy(y);
+                        region.setMinx(x);
+                        region.setMiny(y);
+                        regiones.put(color, region);
+                    }else{
+                        region = regiones.get(pintado[pixel]);
+                        assert region != null: "La region debe de existir";
+                        region.incrementaArea();
+                        
+                        if(x < region.getMinx()){
+                            region.setMinx(x);
+                        }else if(x > region.getMaxx()){
+                            region.setMaxx(x);
                         }
+                        if(y < region.getMiny()){
+                            region.setMiny(y);
+                        }else if(y > region.getMaxy()){
+                            region.setMaxy(y);
+                        }
+                        
+                        if(x != 0 && rgbs[x - 1 + y * w] == 0)
+                            region.incrementaPerimetro();
+                        else if (y != 0 && rgbs[x + (y - 1) * w] == 0)
+                            region.incrementaPerimetro();
+                        else if (x != w - 1 && rgbs[x + 1 + y * w] == 0)
+                            region.incrementaPerimetro();
+                        else if (y != h - 1 && rgbs[x + (y + 1) * w] == 0)
+                            region.incrementaPerimetro();
+                        else if(x != 0 && y != 0 && rgbs[x - 1 + (y - 1) * w] == 0)
+                            region.incrementaPerimetro();
+                        else if(x != 0 && y != h - 1 && rgbs[x - 1 + (y + 1) * w] == 0)
+                            region.incrementaPerimetro();
+                        else if(x != w - 1 && y != 0 && rgbs[x + 1 + (y - 1) * w] == 0)
+                            region.incrementaPerimetro();
+                        else if(x != w - 1 && y != h - 1 && rgbs[x + 1 + (y + 1) * w] == 0)
+                            region.incrementaPerimetro();
+                        
+                        rgbs[y * w + x] = pintado[pixel];
                     }
                 }
             }
         }
-        
-        for(int y = 0; y < h; y++){
-            for(int x = 0; x < w; x++){
-                pixel = rgbs[y * w + x];
-                rgbs[y * w + x] = pintado[pixel];
-            }
-        }
-        
-        imagen.setRGB(0, 0, w, h, rgbs, 0, w);
-        return imagen;
+        imagen.setRegiones(regiones);
+        bufferedImage.setRGB(0, 0, w, h, rgbs, 0, w);
     }
     
     @Override

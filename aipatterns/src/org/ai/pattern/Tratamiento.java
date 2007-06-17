@@ -1,15 +1,5 @@
-/*
- * Tratamiento.java
- *
- * Created on 13 juin 2007, 11:23:46
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
 
 package org.ai.pattern;
-
-import java.awt.image.BufferedImage;
 
 /**
  *
@@ -17,13 +7,13 @@ import java.awt.image.BufferedImage;
  */
 public abstract class Tratamiento implements Runnable{
     Filtrable parent;
-    BufferedImage imagen;
+    Imagen imagen;
     
     public Tratamiento(Filtrable parent){
         this.parent = parent;
     }
     
-    public synchronized void tratarImagen(BufferedImage imagen){
+    public synchronized void tratarImagen(Imagen imagen){
         this.imagen = imagen;
         
         if(imagen == null){
@@ -35,17 +25,17 @@ public abstract class Tratamiento implements Runnable{
     }
     
     public void run() {
-        BufferedImage newimagen = tratamientoImagen();
+        tratamientoImagen();
         
-        if( newimagen != null){
-            parent.imagenFiltrada(newimagen, getMensajeExito());
+        if( imagen.getImagen() != null){
+            parent.imagenFiltrada(imagen, getMensajeExito());
         }else{
             parent.imagenFiltrada(null);
         }
         System.gc();
     }
     
-    abstract BufferedImage tratamientoImagen();
+    abstract void tratamientoImagen();
     
     String getMensajeExito(){
         return "Imagen procesada en";

@@ -19,16 +19,17 @@ import static org.ai.pattern.Desaturador.*;
      }
      
      
-     private BufferedImage trazarBordesRoberts(){
+     private Imagen trazarBordesRoberts(){
+         BufferedImage bufferedImage = imagen.getImagen();
          /* Posicion de los pixeles:
           *      x  x  x
           *      x  P  r
           *      x  s  x
           */
-         int w = imagen.getWidth();
-         int h = imagen.getHeight();
+         int w = bufferedImage.getWidth();
+         int h = bufferedImage.getHeight();
          int[] rgbs = new int[w*h];
-         imagen.getRGB(0,0,w,h,rgbs,0,w);
+         bufferedImage.getRGB(0,0,w,h,rgbs,0,w);
          
          for(int y = 0; y < h; y++){
              for(int x =0; x < w; x++){
@@ -53,18 +54,19 @@ import static org.ai.pattern.Desaturador.*;
                      s = 0;
                  }
                  
-                 imagen.setRGB(x, y, gris2RGB(hipotenusaColor(pixel, r, s)));
+                 bufferedImage.setRGB(x, y, gris2RGB(hipotenusaColor(pixel, r, s)));
              }
          }
          
          return imagen;
      }
      
-     private BufferedImage trazarBordesPrewitt(){
-         int w = imagen.getWidth();
-         int h = imagen.getHeight();
+     private Imagen trazarBordesPrewitt(){
+         BufferedImage bufferedImage = imagen.getImagen();
+         int w = bufferedImage.getWidth();
+         int h = bufferedImage.getHeight();
          int[] rgbs = new int[w*h];
-         imagen.getRGB(0,0,w,h,rgbs,0,w);
+         bufferedImage.getRGB(0,0,w,h,rgbs,0,w);
          
          int gX, gY;
          int [] z = new int [8];
@@ -124,18 +126,19 @@ import static org.ai.pattern.Desaturador.*;
                  gX = z[5] + z[6] + z[7] - z[0] - z[1] - z[2];
                  gY = z[2] + z[4] + z[7] - z[0] - z[3] - z[5];
                  
-                 imagen.setRGB(x, y, gris2RGB((int) Math.sqrt(gX * gX + gY * gY)));
+                 bufferedImage.setRGB(x, y, gris2RGB((int) Math.sqrt(gX * gX + gY * gY)));
              }
          }
          
          return imagen;
      }
      
-     private BufferedImage trazarBordesSobel(){
-         int w = imagen.getWidth();
-         int h = imagen.getHeight();
+     private Imagen trazarBordesSobel(){
+         BufferedImage bufferedImage = imagen.getImagen();
+         int w = bufferedImage.getWidth();
+         int h = bufferedImage.getHeight();
          int[] rgbs = new int[w*h];
-         imagen.getRGB(0,0,w,h,rgbs,0,w);
+         bufferedImage.getRGB(0,0,w,h,rgbs,0,w);
          
          int gX, gY;
          int [] z = new int [8];
@@ -195,7 +198,7 @@ import static org.ai.pattern.Desaturador.*;
                  gX = z[5] + 2*z[6] + z[7] - z[0] - 2*z[1] - z[2];
                  gY = z[2] + 2*z[4] + z[7] - z[0] - 2*z[3] - z[5];
                  
-                 imagen.setRGB(x, y, gris2RGB((int) Math.sqrt(gX * gX + gY * gY)));
+                 bufferedImage.setRGB(x, y, gris2RGB((int) Math.sqrt(gX * gX + gY * gY)));
              }
          }
          
@@ -203,16 +206,18 @@ import static org.ai.pattern.Desaturador.*;
      }
      
      @Override
-     BufferedImage tratamientoImagen(){
+     void tratamientoImagen(){
          switch(operador){
          case ROBERTS_OPERATOR:
-             return trazarBordesRoberts();
+             trazarBordesRoberts();
+             break;
          case PREWITT_OPERATOR:
-             return trazarBordesPrewitt();
+             trazarBordesPrewitt();
+             break;
          case SOBEL_OPERATOR:
-             return trazarBordesSobel();
+             trazarBordesSobel();
+             break;
          }
-         return null;
      }
      
      @Override

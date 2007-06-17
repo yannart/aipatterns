@@ -3,6 +3,7 @@ package org.ai.pattern;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Map;
 
 /**
  *
@@ -18,6 +19,7 @@ public class Imagen {
     private int id;
     private int nivelhistorial = -1;
     private int maxnivelhistorial = -1;
+    private Map <Integer, Region> regiones;
     
     public Imagen(ImagenesManager imagenesManager, File file, int id) {
         if(imagenesManager == null || file == null || id < 0){
@@ -97,5 +99,11 @@ public class Imagen {
         this.maxnivelhistorial = maxnivelhistorial;
     }
     
+    public Map<Integer, Region> getRegiones() {
+        return regiones;
+    }
     
+    public void setRegiones(Map<Integer, Region> regiones) {
+        this.regiones = regiones;
+    }
 }
