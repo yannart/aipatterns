@@ -33,7 +33,7 @@ public class Adelgazamiento extends Tratamiento{
             int miny = region.getMiny();
             int maxx = region.getMaxx();
             int maxy = region.getMaxy();
-            
+                       
             //Region
             for(int y = miny; y <= maxy; y++){
                 for(int x = minx; x <= maxx; x++){
