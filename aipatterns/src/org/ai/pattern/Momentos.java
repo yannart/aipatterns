@@ -36,29 +36,17 @@ import static java.lang.Math.pow;
          crearMomentosGeometricos();
      }
      
+     
+     
      public List<Double> getDescriptores() {
          return descriptores;
      }
      private void crearMomentosGeometricos(){
          crearMomentosCentrales();
      }
-     private int momentoN(int mx, int my){
-         int color = 0;
-         int mn = 0;
-         for(int x = xMin; x<xMax; x++){
-             for(int y = yMin; y<yMax; y++){
-                 color = desaturar(image.getRGB(x, y));
-                 if(color == 0){
-                     continue;
-                 }
-                 mn += pow(x,mx)*pow(y,my)*color;
-             }
-         }
-         return mn;
-     }
+    
      private void crearMomentosCentrales(){
-         
-        
+             
          double n20 = n(2,0);
          double n02 = n(0,2);
          double n11 = n(1,1);
@@ -69,7 +57,7 @@ import static java.lang.Math.pow;
         
          double fi1 = n20+n02;
          double fi2 = pow((n20-n02),2)+4*pow((n11),2);
-         double fi3 = (float)(pow(n30-3*n12,2)+pow(3*n21-n03,2));
+         double fi3 = pow(n30-3*n12,2)+pow(3*n21-n03,2);
          
          descriptores.add(fi1);
          descriptores.add(fi2);
@@ -109,5 +97,19 @@ import static java.lang.Math.pow;
              }
          }
          return Mn;
+     }
+      private int momentoN(int mx, int my){
+         int color = 0;
+         int mn = 0;
+         for(int x = xMin; x<xMax; x++){
+             for(int y = yMin; y<yMax; y++){
+                 color = desaturar(image.getRGB(x, y));
+                 if(color == 0){
+                     continue;
+                 }
+                 mn += pow(x,mx)*pow(y,my)*color;
+             }
+         }
+         return mn;
      }
  }
