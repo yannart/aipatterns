@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.ai.pattern.Imagen;
+import org.ai.pattern.Momentos;
 import org.ai.pattern.Region;
 
 /**
@@ -157,9 +158,12 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
                 return;
             }
             if(imagen.getRegiones().containsKey(color)){
-                
-                
                 Region region = imagen.getRegiones().get(color);
+                
+                
+                Momentos m = new Momentos(region.getMinx(),region.getMiny(),region.getMaxx(), region.getMaxy(),bufferedImage);
+                
+                
                 
                 JOptionPane.showMessageDialog(this,"El area de la region es: " + region.getArea()
                         +" pixeles\nEl perimetro es : " + region.getPerimetro()
