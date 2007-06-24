@@ -140,14 +140,27 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
         }
         
         private void muestraInformacionRegion(int point_x, int point_y){
+            
+            
+            System.out.println("point_x: "+point_x);
+            System.out.println("point_y: "+point_y);
+            
+            
+            
             int w = bufferedImage.getWidth();
             int h = bufferedImage.getHeight();
             int color = bufferedImage.getRGB(point_x, point_y) & 0xFFFFFF;
+            System.out.println("El color es: "+color);
+            
+            
             if(color == 0 || imagen.getRegiones() == null){
                 return;
             }
             if(imagen.getRegiones().containsKey(color)){
+                
+                
                 Region region = imagen.getRegiones().get(color);
+                
                 JOptionPane.showMessageDialog(this,"El area de la region es: " + region.getArea()
                         +" pixeles\nEl perimetro es : " + region.getPerimetro()
                         + " pixeles\nSe encuentra en el rectangulo de cooredenadas ("
