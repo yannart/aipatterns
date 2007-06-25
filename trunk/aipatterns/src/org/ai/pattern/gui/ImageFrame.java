@@ -1,15 +1,14 @@
 
 package org.ai.pattern.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.ai.pattern.Imagen;
-import org.ai.pattern.Momentos;
 import org.ai.pattern.Region;
 
 /**
@@ -20,6 +19,8 @@ public class ImageFrame extends javax.swing.JInternalFrame {
     
     private ImagePanel imagepanel;
     private Imagen imagen;
+    private boolean verCentroide;
+    private int xCentroide, yCentroide;
     
     /** Creates new form ImageFrame
      * @param imagen
@@ -141,19 +142,22 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
         }
         
         private void muestraInformacionRegion(int point_x, int point_y){
-            
-            int w = bufferedImage.getWidth();
-            int h = bufferedImage.getHeight();
             int color = bufferedImage.getRGB(point_x, point_y) & 0xFFFFFF;
             
-            if(color == 0 || imagen.getRegiones() == null){
+            if(color == 0 || imagen.getRegiones() == null)
                 return;
-            }
+            
             if(imagen.getRegiones().containsKey(color)){
                 Region region = imagen.getRegiones().get(color);
+                xCentroide = region.getMomentos().getXCentral();
+                yCentroide = region.getMomentos().getYCentral();
+                verCentroide = true;
+                repaint();
                 RasgosDialog rasgosDlg = new RasgosDialog(this, true);
                 rasgosDlg.setRegion(region);
                 rasgosDlg.setVisible(true);
+                verCentroide = false;
+                repaint();
             }
         }
         
@@ -161,6 +165,11 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
         protected void paintComponent(Graphics g){
             super.paintComponent(g);
             g.drawImage(bufferedImage, 0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), this);
+            if(verCentroide){
+                g.setColor(Color.WHITE);
+                g.drawLine(xCentroide - 5, yCentroide, xCentroide + 5, yCentroide);
+                g.drawLine(xCentroide, yCentroide - 5, xCentroide, yCentroide + 5);
+            }
         }
     }
 }
