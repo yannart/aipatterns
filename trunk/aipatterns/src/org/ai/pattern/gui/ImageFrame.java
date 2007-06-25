@@ -151,24 +151,9 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
             }
             if(imagen.getRegiones().containsKey(color)){
                 Region region = imagen.getRegiones().get(color);
-                
-                JOptionPane.showMessageDialog(this,"El area de la region es: " + region.getArea()
-                        +" pixeles\nEl perimetro es : " + region.getPerimetro()
-                        + " pixeles\nSe encuentra en el rectangulo de cooredenadas ("
-                        + region.getMinx() + ", " + region.getMiny()+ "), ("
-                        + region.getMaxx() + ", " + region.getMaxy()+ ")"
-                        , "Medidas de la region", JOptionPane.INFORMATION_MESSAGE);
-                
-                Momentos m = new Momentos(region.getMinx(),
-                        region.getMiny(),
-                        region.getMaxx(), 
-                        region.getMaxy(),
-                        bufferedImage);
-                org.ai.pattern.gui.Momentos momentos = null;
-                momentos = new org.ai.pattern.gui.Momentos(this,true);
-                momentos.setDescriptores(m);
-                momentos.setVisible(true);
-                
+                RasgosDialog rasgosDlg = new RasgosDialog(this, true);
+                rasgosDlg.setRegion(region);
+                rasgosDlg.setVisible(true);
             }
         }
         

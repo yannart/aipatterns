@@ -14,13 +14,22 @@ package org.ai.pattern;
  * @author yannart
  */
 public class Region {
-    int perimetro = 1;
-    long area = 1;
-    int color;
-    int minx, miny, maxx, maxy;
+    private int perimetro = 1;
+    private long area = 1;
+    private int color;
+    private int minx, miny, maxx, maxy;
+    private Momentos momentos;
     
     public Region(){
         
+    }
+    
+    public Momentos getMomentos(){
+        return momentos;
+    }
+    
+    public void setMomentos(Momentos momentos){
+        this.momentos = momentos;
     }
     
     public int getPerimetro() {

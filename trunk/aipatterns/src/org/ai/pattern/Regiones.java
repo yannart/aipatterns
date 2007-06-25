@@ -2,6 +2,7 @@
 package org.ai.pattern;
 
 import java.awt.image.BufferedImage;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -188,9 +189,24 @@ public class Regiones extends Tratamiento{
                 }
             }
         }
-        imagen.setRegiones(regiones);
+        
         bufferedImage.setRGB(0, 0, w, h, rgbs, 0, w);
+        buscaRasgos(regiones.values(), bufferedImage);
+        imagen.setRegiones(regiones);
     }
+    
+    void buscaRasgos(Collection <Region> regiones, BufferedImage imagen){
+        for(Region region: regiones){
+            Momentos m = new Momentos(region.getMinx(),
+                    region.getMiny(),
+                    region.getMaxx(),
+                    region.getMaxy(),
+                    region.getColor(),
+                    imagen);
+            region.setMomentos(m);
+        }
+    }
+    
     
     @Override
     String getMensajeExito() {
