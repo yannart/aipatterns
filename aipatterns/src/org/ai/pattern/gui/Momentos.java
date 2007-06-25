@@ -19,6 +19,7 @@ import static org.ai.pattern.util.Utilities.setCentered;
          //super(parent, modal);
          this.setModal(modal);
          initComponents();
+         this.getRootPane().setDefaultButton(this.jButtonAceptar);
          setCentered(this);
      }
      
@@ -34,6 +35,7 @@ import static org.ai.pattern.util.Utilities.setCentered;
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableDescriptores = new javax.swing.JTable();
+        jButtonAceptar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Momentos");
@@ -70,6 +72,13 @@ import static org.ai.pattern.util.Utilities.setCentered;
                 .addContainerGap())
         );
 
+        jButtonAceptar.setText("Aceptar");
+        jButtonAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAceptarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -78,10 +87,14 @@ import static org.ai.pattern.util.Utilities.setCentered;
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addComponent(jLabelCentro))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addComponent(jLabelCentro)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
+                        .addComponent(jButtonAceptar)
+                        .addGap(18, 18, 18))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -89,12 +102,19 @@ import static org.ai.pattern.util.Utilities.setCentered;
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelCentro)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelCentro)
+                    .addComponent(jButtonAceptar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
+    // TODO add your handling code here:
+    this.setVisible(false);
+ }//GEN-LAST:event_jButtonAceptarActionPerformed
     
     /**
      * @param args the command line arguments
@@ -114,9 +134,9 @@ import static org.ai.pattern.util.Utilities.setCentered;
     }
     public void setDescriptores(org.ai.pattern.Momentos m){
         TableModel modelo = this.jTableDescriptores.getModel();
-        List<Double> desc = m.getDescriptores();
+        List<Float> desc = m.getDescriptores();
         int i=0;
-        for(Double d: desc){
+        for(Float d: desc){
             modelo.setValueAt(d.toString(),i,1);
             i++;
         }
@@ -124,6 +144,7 @@ import static org.ai.pattern.util.Utilities.setCentered;
                 ""+m.getXCentral()+","+m.getYCentral()+")");
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonAceptar;
     private javax.swing.JLabel jLabelCentro;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
