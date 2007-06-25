@@ -167,8 +167,16 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
                         + region.getMaxx() + ", " + region.getMaxy()+ ")"
                         , "Medidas de la region", JOptionPane.INFORMATION_MESSAGE);
                 
-                Momentos m = new Momentos(region.getMinx(),region.getMiny(),region.getMaxx(), region.getMaxy(),bufferedImage);
-                new org.ai.pattern.gui.Momentos(this,true).setVisible(true);
+                Momentos m = new Momentos(region.getMinx(),
+                        region.getMiny(),
+                        region.getMaxx(), 
+                        region.getMaxy(),
+                        bufferedImage);
+                org.ai.pattern.gui.Momentos momentos = null;
+                momentos = new org.ai.pattern.gui.Momentos(this,true);
+                momentos.setDescriptores(m);
+                momentos.setVisible(true);
+                
             }
         }
         
