@@ -52,7 +52,7 @@ import static java.lang.Math.pow;
          float n21 = n(2,1);
         
          float fi1 = n20+n02;
-         float fi2 = (float)(pow((n20-n02),2)+4*pow((n11),2));
+         float fi2 = (float)(pow(n20-n02,2)+4*pow(n11,2));
          float fi3 = (float)(pow(n30-3*n12,2)+pow(3*n21-n03,2));
          
          descriptores.add(fi1);
@@ -69,7 +69,7 @@ import static java.lang.Math.pow;
       */
      protected float n(int p,int q){
          double expo = 0;
-         expo = ((p+q)/2)+1;
+         expo = ((p+q)/2.0)+1.0;
          double den = pow(getMomentoCentral(0,0),expo);
          return (float)(getMomentoCentral(p,q)/den);
      }
@@ -104,7 +104,7 @@ import static java.lang.Math.pow;
     }
      
      private float momentoC(int p, int q, int xCentral, int yCentral){
-         int color = 0;
+         int color;
          int Mn = 0;
          for(int x = xMin; x<=xMax; x++){
              for(int y = yMin; y<=yMax; y++){
@@ -124,7 +124,7 @@ import static java.lang.Math.pow;
        * @return El momento geometrico de una region
        */
       protected int getMomentoGeometrico(int p, int q){
-         int color = 0;
+         int color;
          int mn = 0;
          for(int x = xMin; x<=xMax; x++){
              for(int y = yMin; y<=yMax; y++){
