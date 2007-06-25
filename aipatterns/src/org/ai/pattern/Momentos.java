@@ -27,25 +27,27 @@ import static java.lang.Math.pow;
      private int yMax;
      private BufferedImage image;
      
+     private int xCentral;
+     private int yCentral;
+     
      public Momentos(int xMin, int yMin, int xMax, int yMax, BufferedImage image) {
          this.xMin = xMin;
          this.yMin = yMin;
          this.xMax = xMax;
          this.yMax = yMax;
          this.image =image;
-         crearMomentosGeometricos();
+         crearMomentosInvariantes();
      }
      
-     
-     
+     /**
+      * Metodo que devuelve los valores de fi
+      * @return Valor de los descriptores
+      */
      public List<Double> getDescriptores() {
          return descriptores;
      }
-     private void crearMomentosGeometricos(){
-         crearMomentosCentrales();
-     }
     
-     private void crearMomentosCentrales(){
+     private void crearMomentosInvariantes(){
              
          double n20 = n(2,0);
          double n02 = n(0,2);
@@ -64,25 +66,46 @@ import static java.lang.Math.pow;
          descriptores.add(fi3);
          
      }
-     private double n(int p,int q){
+     /**
+      * Metodo que devuelve el valor de n
+      * @param p valor de p
+      * @param q valor de q
+      * @return Valor de n
+      */
+     protected double n(int p,int q){
          double expo = 0;
          expo = ((p+q)/2)+1;
-         double den = pow(M(0,0),expo);
-         return M(p,q)/den;
+         double den = pow(getMomentoCentral(0,0),expo);
+         return getMomentoCentral(p,q)/den;
      }
-     private double M(int p, int q){
-         int m00 = momentoN(0,0);
-         int m10 = momentoN(1,0);
-         int m01 = momentoN(0,1);
+     /**
+      * Metodo que calcula el momento central de una region determinada
+      * @param p Valor de p
+      * @param q Valor de q
+      * @return El momento central
+      */
+     protected double getMomentoCentral(int p, int q){
+         int m00 = getMomentoGeometrico(0,0);
+         int m10 = getMomentoGeometrico(1,0);
+         int m01 = getMomentoGeometrico(0,1);
         
          int xCentral = 0;
          int yCentral = 0;
          
-         xCentral = m10/m00;
-         yCentral = m01/m00;
+         // obtiene el centroide
+         this.xCentral = xCentral = m10/m00;
+         this.yCentral = yCentral = m01/m00;
           
          return momentoC(p,q,xCentral,yCentral);
      }
+
+    public int getXCentral() {
+        return xCentral;
+    }
+
+    public int getYCentral() {
+        return yCentral;
+    }
      
      private double momentoC(int p, int q, int xCentral, int yCentral){
          int color = 0;
@@ -98,7 +121,13 @@ import static java.lang.Math.pow;
          }
          return Mn;
      }
-      private int momentoN(int mx, int my){
+      /**
+       * Metodo que obtiene el momento geometrico en una imagen ejem: m00, m01, ...
+       * @param p Valor de p
+       * @param q Valor de q
+       * @return El momento geometrico de una region
+       */
+      protected int getMomentoGeometrico(int p, int q){
          int color = 0;
          int mn = 0;
          for(int x = xMin; x<xMax; x++){
@@ -107,7 +136,7 @@ import static java.lang.Math.pow;
                  if(color == 0){
                      continue;
                  }
-                 mn += pow(x,mx)*pow(y,my)*color;
+                 mn += pow(x,p)*pow(y,q)*color;
              }
          }
          return mn;
