@@ -20,7 +20,7 @@ import static java.lang.Math.pow;
  * @author Oracle
  */;
  public class Momentos {
-     private List<Double> descriptores = new ArrayList<Double>();
+     private List<Float> descriptores = new ArrayList<Float>();
      private int xMin;
      private int yMin;
      private int xMax;
@@ -43,23 +43,23 @@ import static java.lang.Math.pow;
       * Metodo que devuelve los valores de fi
       * @return Valor de los descriptores
       */
-     public List<Double> getDescriptores() {
+     public List<Float> getDescriptores() {
          return descriptores;
      }
     
      private void crearMomentosInvariantes(){
              
-         double n20 = n(2,0);
-         double n02 = n(0,2);
-         double n11 = n(1,1);
-         double n30 = n(3,0);
-         double n03 = n(0,3);
-         double n12 = n(1,2);
-         double n21 = n(2,1);
+         float n20 = n(2,0);
+         float n02 = n(0,2);
+         float n11 = n(1,1);
+         float n30 = n(3,0);
+         float n03 = n(0,3);
+         float n12 = n(1,2);
+         float n21 = n(2,1);
         
-         double fi1 = n20+n02;
-         double fi2 = pow((n20-n02),2)+4*pow((n11),2);
-         double fi3 = pow(n30-3*n12,2)+pow(3*n21-n03,2);
+         float fi1 = n20+n02;
+         float fi2 = (float)(pow((n20-n02),2)+4*pow((n11),2));
+         float fi3 = (float)(pow(n30-3*n12,2)+pow(3*n21-n03,2));
          
          descriptores.add(fi1);
          descriptores.add(fi2);
@@ -72,11 +72,11 @@ import static java.lang.Math.pow;
       * @param q valor de q
       * @return Valor de n
       */
-     protected double n(int p,int q){
+     protected float n(int p,int q){
          double expo = 0;
          expo = ((p+q)/2)+1;
          double den = pow(getMomentoCentral(0,0),expo);
-         return getMomentoCentral(p,q)/den;
+         return (float)(getMomentoCentral(p,q)/den);
      }
      /**
       * Metodo que calcula el momento central de una region determinada
@@ -84,7 +84,7 @@ import static java.lang.Math.pow;
       * @param q Valor de q
       * @return El momento central
       */
-     protected double getMomentoCentral(int p, int q){
+     protected float getMomentoCentral(int p, int q){
          int m00 = getMomentoGeometrico(0,0);
          int m10 = getMomentoGeometrico(1,0);
          int m01 = getMomentoGeometrico(0,1);
@@ -107,7 +107,7 @@ import static java.lang.Math.pow;
         return yCentral;
     }
      
-     private double momentoC(int p, int q, int xCentral, int yCentral){
+     private float momentoC(int p, int q, int xCentral, int yCentral){
          int color = 0;
          int Mn = 0;
          for(int x = xMin; x<xMax; x++){
