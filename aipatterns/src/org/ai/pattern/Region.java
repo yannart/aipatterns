@@ -18,10 +18,51 @@ public class Region {
     private long area = 1;
     private int color;
     private int minx, miny, maxx, maxy;
+    private int terminal;
+    private int puntoInterno;
+    private int puntoCruce;
+    private int triada;
     private Momentos momentos;
     
     public Region(){
         
+    }
+    
+    
+    public int getTerminal() {
+        return terminal;
+    }
+    
+    public void setTerminal(int terminal) {
+        this.terminal = terminal;
+    }
+    
+    public int getPuntoInterno() {
+        return puntoInterno;
+    }
+    
+    public void setPuntoInterno(int puntoInterno) {
+        this.puntoInterno = puntoInterno;
+    }
+    
+    public int getPuntoCruce() {
+        return puntoCruce;
+    }
+    
+    public void setPuntoCruce(int puntoCruce) {
+        this.puntoCruce = puntoCruce;
+    }
+    
+    public int getTriada() {
+        return triada;
+    }
+    
+    public void setTriada(int triada) {
+        this.triada = triada;
+    }
+    
+    public int getHoyos() {
+        return (triada - terminal) / 2 + 1;
     }
     
     public Momentos getMomentos(){
@@ -46,6 +87,14 @@ public class Region {
     
     public void setArea(long area) {
         this.area = area;
+    }
+    
+    public float getCompactacion(){
+        return (float) (4 * Math.PI * area / Math.pow(perimetro, 2));
+    }
+    
+    public float getDensidad(){
+        return (float) (Math.pow(perimetro, 2) / area);
     }
     
     public int getColor() {

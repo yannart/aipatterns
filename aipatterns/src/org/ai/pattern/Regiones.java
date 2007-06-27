@@ -64,21 +64,19 @@ public class Regiones extends Tratamiento{
                 }
                 pixel = bufferedImage.getRGB(x,y) & 0x00FFFFFF;
                 
-                //System.out.println("s: " + s + " r: " + r + " t: " + t + " u:" + u);
-                
                 if(pixel != 0){
                     if(s != 0){
                         pixel = s;
                     }else if(r != 0){
                         pixel = r;
-                    /*}else if(u != 0){
+                    }else if(u != 0){
                         pixel = u;
-                     */}else if(t != 0){
-                         pixel = t;
-                     }else{
+                    }else if(t != 0){
+                        pixel = t;
+                    }else{
                         pixel = colores;
                         colores++;
-                     }
+                    }
                 }
                 rgbs[y * w + x] = pixel;
             }

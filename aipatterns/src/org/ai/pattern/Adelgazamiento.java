@@ -25,14 +25,19 @@ public class Adelgazamiento extends Tratamiento{
         bufferedImage.getRGB(0,0,w,h,rgbs,0,w);
         int [] vecinos = new int[8];
         List <Punto> pixelesBorrar = new ArrayList <Punto> ();
+        int color;
+        int minx;
+        int miny;
+        int maxx;
+        int maxy;
+        long borrados;
         
         for(Region region: regiones.values()){
-            long borrados;
-            int color = region.getColor();
-            int minx = region.getMinx();
-            int miny = region.getMiny();
-            int maxx = region.getMaxx();
-            int maxy = region.getMaxy();
+            color = region.getColor();
+            minx = region.getMinx();
+            miny = region.getMiny();
+            maxx = region.getMaxx();
+            maxy = region.getMaxy();
             
             //ITERACIONES
             do{
@@ -82,11 +87,71 @@ public class Adelgazamiento extends Tratamiento{
                     rgbs[point.x + point.y* w] = 0;
                 }
             } while (borrados > 0);
+            
+            buscaRasgos(region, rgbs, w);
         }
         bufferedImage.setRGB(0, 0, w, h, rgbs, 0, w);
     }
     
+    private void buscaRasgos(Region region, int[] rgbs, int w){
+        int terminal = 0;
+        int puntoInterno = 0;
+        int puntoCruce = 0;
+        int triada = 0;
+        int color = region.getColor();
+        int minx = region.getMinx();
+        int miny = region.getMiny();
+        int maxx = region.getMaxx();
+        int maxy = region.getMaxy();
+        int[] vecinos = new int[8];
+        int cardinalidad;
+        for(int y = miny; y <= maxy; y++){
+            for(int x = minx; x <= maxx; x++){
+                int pixel = rgbs[x + y* w];
+                
+                if((pixel & 0x00FFFFFF) != color){
+                    continue;
+                }
+                
+                cardinalidad = 0;
+                set8Vecinos(vecinos, x, y, w, rgbs, minx, maxx, miny, maxy);
+                
+                for(int vecino: vecinos){
+                    if((vecino & 0x00FFFFFF) == color){
+                        cardinalidad++;
+                    }
+                }
+                //System.out.println("( " + x + ", " + y + " ) = " + cardinalidad);
+                switch(cardinalidad){
+                case 0:
+                    break;
+                case 1:
+                    terminal++;
+                    break;
+                case 2:
+                    puntoInterno++;
+                    break;
+                case 3:
+                    triada++;
+                    break;
+                default:
+                    puntoCruce++;
+                }
+            }
+        }
+        
+        region.setTerminal(terminal);
+        region.setPuntoCruce(puntoCruce);
+        region.setPuntoInterno(puntoInterno);
+        region.setTriada(triada);
+    }
+    
     private void set8Vecinos(int [] vecinos, int x, int y, int w, int [] rgbs, int minx, int maxx, int miny, int maxy){
+        
+        /*   7   0   1
+         *   6   P   2
+         *   5   4   3
+         */
         if(x > minx){
             vecinos[6] = rgbs[x - 1 + y * w];
             if(y > miny){
