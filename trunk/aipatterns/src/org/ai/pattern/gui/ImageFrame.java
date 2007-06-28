@@ -142,6 +142,9 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
         }
         
         private void muestraInformacionRegion(int point_x, int point_y){
+            if(point_x >= bufferedImage.getWidth() || point_y >= bufferedImage.getHeight())
+                return;
+                
             int color = bufferedImage.getRGB(point_x, point_y) & 0xFFFFFF;
             
             if(color == 0 || imagen.getRegiones() == null)
