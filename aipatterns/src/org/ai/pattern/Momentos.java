@@ -40,9 +40,9 @@ import static java.lang.Math.pow;
      public List<Float> getDescriptores() {
          return descriptores;
      }
-    
+     
      private void crearMomentosInvariantes(){
-             
+         
          float n20 = n(2,0);
          float n02 = n(0,2);
          float n11 = n(1,1);
@@ -50,15 +50,20 @@ import static java.lang.Math.pow;
          float n03 = n(0,3);
          float n12 = n(1,2);
          float n21 = n(2,1);
-        
+         
          float fi1 = n20+n02;
-         float fi2 = (float)(pow(n20-n02,2)+4*pow(n11,2));
-         float fi3 = (float)(pow(n30-3*n12,2)+pow(3*n21-n03,2));
+         float fi2 = (float) (pow(n20-n02,2) + 4 * pow(n11,2));
+         float fi3 = (float) (pow(n30-3*n12,2) + pow(3*n21-n03,2));
+         float fi4 = (float) (pow(n30 + n12, 2) + pow(n21 + n03, 2));
+         float fi5 = (float) ((n30 - 3 * n12) * (n30 + n12) * (pow(n30 + n12, 2)
+                 - 3 * pow(n21 + n03, 2)) + (3 * n21 - n03) * (n21 + n03) *
+                 (3 * pow(n30 + n12, 2) - pow(n21 + n03, 2)));
          
          descriptores.add(fi1);
          descriptores.add(fi2);
          descriptores.add(fi3);
-         
+         descriptores.add(fi4);
+         descriptores.add(fi5);
      }
      
      /**
@@ -84,24 +89,24 @@ import static java.lang.Math.pow;
          int m00 = getMomentoGeometrico(0,0);
          int m10 = getMomentoGeometrico(1,0);
          int m01 = getMomentoGeometrico(0,1);
-        
+         
          int xCentral = 0;
          int yCentral = 0;
          
          // obtiene el centroide
          this.xCentral = xCentral = m10/m00;
          this.yCentral = yCentral = m01/m00;
-          
+         
          return momentoC(p,q,xCentral,yCentral);
      }
-
-    public int getXCentral() {
-        return xCentral;
-    }
-
-    public int getYCentral() {
-        return yCentral;
-    }
+     
+     public int getXCentral() {
+         return xCentral;
+     }
+     
+     public int getYCentral() {
+         return yCentral;
+     }
      
      private float momentoC(int p, int q, int xCentral, int yCentral){
          int color;
@@ -117,13 +122,13 @@ import static java.lang.Math.pow;
          }
          return Mn;
      }
-      /**
-       * Metodo que obtiene el momento geometrico en una imagen ejem: m00, m01, ...
-       * @param p Valor de p
-       * @param q Valor de q
-       * @return El momento geometrico de una region
-       */
-      protected int getMomentoGeometrico(int p, int q){
+     /**
+      * Metodo que obtiene el momento geometrico en una imagen ejem: m00, m01, ...
+      * @param p Valor de p
+      * @param q Valor de q
+      * @return El momento geometrico de una region
+      */
+     protected int getMomentoGeometrico(int p, int q){
          int color;
          int mn = 0;
          for(int x = xMin; x<=xMax; x++){
