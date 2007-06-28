@@ -43,10 +43,10 @@ public class Adelgazamiento extends Tratamiento{
             do{
                 borrados = 0;
                 
-            /*   7   0   1
-             *   6   P   2
-             *   5   4   3
-             */
+                /*   7   0   1
+                 *   6   P   2
+                 *   5   4   3
+                 */
                 //Iteracion 1
                 pixelesBorrar.clear();
                 for(int y = miny; y <= maxy; y++){
@@ -104,7 +104,8 @@ public class Adelgazamiento extends Tratamiento{
         int maxx = region.getMaxx();
         int maxy = region.getMaxy();
         int[] vecinos = new int[8];
-        int cardinalidad;
+        int vecinos4;
+        int vecinos8;
         for(int y = miny; y <= maxy; y++){
             for(int x = minx; x <= maxx; x++){
                 int pixel = rgbs[x + y* w];
@@ -113,16 +114,26 @@ public class Adelgazamiento extends Tratamiento{
                     continue;
                 }
                 
-                cardinalidad = 0;
+                vecinos4 = 0;
+                vecinos8 = 0;
                 set8Vecinos(vecinos, x, y, w, rgbs, minx, maxx, miny, maxy);
                 
-                for(int vecino: vecinos){
-                    if((vecino & 0x00FFFFFF) == color){
-                        cardinalidad++;
+                for(int i = 0 ; i < vecinos.length ; i++){
+                    if((vecinos[i] & 0x00FFFFFF) == color){
+                        vecinos8++;
+                        if(i % 2 == 0){
+                            vecinos4++;
+                        }
                     }
                 }
                 //System.out.println("( " + x + ", " + y + " ) = " + cardinalidad);
-                switch(cardinalidad){
+                if(vecinos4 == 3){
+                    triada++;
+                }else if(vecinos4 == 4) {
+                    triada+=2;
+                }
+                
+                switch(vecinos8){
                 case 0:
                     break;
                 case 1:
@@ -130,9 +141,6 @@ public class Adelgazamiento extends Tratamiento{
                     break;
                 case 2:
                     puntoInterno++;
-                    break;
-                case 3:
-                    triada++;
                     break;
                 default:
                     puntoCruce++;
