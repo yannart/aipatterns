@@ -22,12 +22,8 @@ public class Region {
     private int puntoInterno;
     private int puntoCruce;
     private int triada;
+    private String nombre;
     private Momentos momentos;
-    
-    public Region(){
-        
-    }
-    
     
     public int getTerminal() {
         return terminal;
@@ -143,5 +139,13 @@ public class Region {
     
     public void incrementaArea(){
         area++;
+    }
+    
+    public String getNombre() {
+        return nombre;
+    }
+    
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 }
