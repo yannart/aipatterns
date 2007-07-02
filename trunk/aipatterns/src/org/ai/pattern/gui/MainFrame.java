@@ -4,6 +4,7 @@ package org.ai.pattern.gui;
 import java.awt.EventQueue;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
@@ -76,7 +77,11 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuItemHistograma = new javax.swing.JMenuItem();
         jMenuItemUmbralizar = new javax.swing.JMenuItem();
         jMenuItemRegionalizar = new javax.swing.JMenuItem();
+        jMenuItemContarRegiones = new javax.swing.JMenuItem();
         jMenuItemAdelgazar = new javax.swing.JMenuItem();
+        jMenuReconocimiento = new javax.swing.JMenu();
+        jMenuItemRegiones = new javax.swing.JMenuItem();
+        jMenuItemReconocer = new javax.swing.JMenuItem();
         jMenuAyuda = new javax.swing.JMenu();
         jMenuItemAbout = new javax.swing.JMenuItem();
 
@@ -218,6 +223,15 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         });
         jMenuImagen.add(jMenuItemRegionalizar);
 
+        jMenuItemContarRegiones.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemContarRegiones.setText("Contar Regiones");
+        jMenuItemContarRegiones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemContarRegionesActionPerformed(evt);
+            }
+        });
+        jMenuImagen.add(jMenuItemContarRegiones);
+
         jMenuItemAdelgazar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemAdelgazar.setText("Adelgazar");
         jMenuItemAdelgazar.addActionListener(new java.awt.event.ActionListener() {
@@ -228,6 +242,23 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         jMenuImagen.add(jMenuItemAdelgazar);
 
         jMenuBar1.add(jMenuImagen);
+
+        jMenuReconocimiento.setText("Reconocimiento");
+
+        jMenuItemRegiones.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemRegiones.setText("Ver Regiones");
+        jMenuItemRegiones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemRegionesActionPerformed(evt);
+            }
+        });
+        jMenuReconocimiento.add(jMenuItemRegiones);
+
+        jMenuItemReconocer.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemReconocer.setText("Reconocer");
+        jMenuReconocimiento.add(jMenuItemReconocer);
+
+        jMenuBar1.add(jMenuReconocimiento);
 
         jMenuAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/help.png"))); // NOI18N
         jMenuAyuda.setText("Ayuda");
@@ -256,7 +287,7 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
+                .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelTaskBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -264,6 +295,32 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
+private void jMenuItemRegionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRegionesActionPerformed
+    if(!enpausa){
+        Imagen imagen = getImagenActual();
+        if(imagen != null){
+            RegionesDialog regionesDlg = new RegionesDialog(this, true, imagen);
+            regionesDlg.setVisible(true);
+        }
+    }
+}//GEN-LAST:event_jMenuItemRegionesActionPerformed
+    
+private void jMenuItemContarRegionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemContarRegionesActionPerformed
+    if(!enpausa){
+        Imagen imagen = getImagenActual();
+        if(imagen != null){
+            Map regiones = imagen.getRegiones();
+            if(regiones != null){
+                int numRegiones = regiones.values().size();
+                JOptionPane.showMessageDialog(this, "El numero de regiones es "
+                        + numRegiones, "Numero de regiones", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                JOptionPane.showMessageDialog(this, "Primero regionalice la imagen", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+}//GEN-LAST:event_jMenuItemContarRegionesActionPerformed
+
 private void jMenuItemAdelgazarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAdelgazarActionPerformed
     if(!enpausa){
         Imagen imagen = getImagenActual();
@@ -543,14 +600,18 @@ private void initOtherComponents(){
     private javax.swing.JMenuItem jMenuItemAbrir;
     private javax.swing.JMenuItem jMenuItemAdelgazar;
     private javax.swing.JMenuItem jMenuItemBordes;
+    private javax.swing.JMenuItem jMenuItemContarRegiones;
     private javax.swing.JMenuItem jMenuItemDeshacer;
     private javax.swing.JMenuItem jMenuItemFiltrar;
     private javax.swing.JMenuItem jMenuItemHistograma;
     private javax.swing.JMenuItem jMenuItemNegativo;
+    private javax.swing.JMenuItem jMenuItemReconocer;
     private javax.swing.JMenuItem jMenuItemRegionalizar;
+    private javax.swing.JMenuItem jMenuItemRegiones;
     private javax.swing.JMenuItem jMenuItemRehacer;
     private javax.swing.JMenuItem jMenuItemSalir;
     private javax.swing.JMenuItem jMenuItemUmbralizar;
+    private javax.swing.JMenu jMenuReconocimiento;
     private javax.swing.JPanel jPanelTaskBar;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
