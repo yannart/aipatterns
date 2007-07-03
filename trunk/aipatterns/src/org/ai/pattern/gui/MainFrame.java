@@ -4,11 +4,13 @@ package org.ai.pattern.gui;
 import java.awt.EventQueue;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import org.ai.pattern.Adelgazamiento;
+import org.ai.pattern.BaseConocimientoNumeros;
 import org.ai.pattern.Bordes;
 import org.ai.pattern.Cronometro;
 import org.ai.pattern.Filtrable;
@@ -17,6 +19,7 @@ import org.ai.pattern.Histograma;
 import org.ai.pattern.Imagen;
 import org.ai.pattern.ImagenesManager;
 import org.ai.pattern.Negativo;
+import org.ai.pattern.Region;
 import org.ai.pattern.Regiones;
 import org.ai.pattern.Umbral;
 import org.ai.pattern.gui.ImageFrame;
@@ -256,6 +259,11 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
 
         jMenuItemReconocer.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemReconocer.setText("Reconocer");
+        jMenuItemReconocer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemReconocerActionPerformed(evt);
+            }
+        });
         jMenuReconocimiento.add(jMenuItemReconocer);
 
         jMenuBar1.add(jMenuReconocimiento);
@@ -295,6 +303,22 @@ public class MainFrame extends javax.swing.JFrame implements Filtrable{
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
+private void jMenuItemReconocerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemReconocerActionPerformed
+    if(!enpausa){
+        Imagen imagen = getImagenActual();
+        if(imagen != null){
+            for(Region region:  imagen.getRegiones().values()){
+                List <Float> momentos = region.getMomentos().getDescriptores();
+                BaseConocimientoNumeros numero = BaseConocimientoNumeros.encuentraNumero(region.getHoyos(),
+                        region.getDensidad(), momentos.get(0), momentos.get(1), momentos.get(2));
+                region.setNumero(numero);
+            }
+            RegionesDialog regionesDlg = new RegionesDialog(this, true, imagen);
+            regionesDlg.setVisible(true);
+        }
+    }
+}//GEN-LAST:event_jMenuItemReconocerActionPerformed
+
 private void jMenuItemRegionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRegionesActionPerformed
     if(!enpausa){
         Imagen imagen = getImagenActual();
@@ -304,7 +328,7 @@ private void jMenuItemRegionesActionPerformed(java.awt.event.ActionEvent evt) {/
         }
     }
 }//GEN-LAST:event_jMenuItemRegionesActionPerformed
-    
+
 private void jMenuItemContarRegionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemContarRegionesActionPerformed
     if(!enpausa){
         Imagen imagen = getImagenActual();

@@ -2,8 +2,11 @@
 package org.ai.pattern;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -14,6 +17,7 @@ import java.util.Random;
 public class Regiones extends Tratamiento{
     
     private int pasadas = 4;
+    private static int MIN_AREA = 30;
     
     public Regiones(Filtrable parent){
         super(parent);
@@ -187,6 +191,16 @@ public class Regiones extends Tratamiento{
                 }
             }
         }
+        
+        List remover = new ArrayList();
+        
+        for(Region regionImagen: regiones.values()){
+            if(regionImagen.getArea() < MIN_AREA){
+                remover.add(regionImagen);
+            }
+        }
+        
+        regiones.values().removeAll(remover);
         
         bufferedImage.setRGB(0, 0, w, h, rgbs, 0, w);
         buscaRasgos(regiones.values(), bufferedImage);

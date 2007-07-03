@@ -24,6 +24,15 @@ public class Region {
     private int triada;
     private String nombre;
     private Momentos momentos;
+    private BaseConocimientoNumeros numero;
+
+    public BaseConocimientoNumeros getNumero() {
+        return numero;
+    }
+
+    public void setNumero(BaseConocimientoNumeros numero) {
+        this.numero = numero;
+    }
     
     public int getTerminal() {
         return terminal;

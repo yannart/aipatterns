@@ -40,7 +40,8 @@ public class RegionesDialog extends javax.swing.JDialog {
         jTable1.getColumn("Color").setCellRenderer(new Renderer());
         if(imagen.getRegiones() != null){
             for(Region region: imagen.getRegiones().values()){
-                modelo.addRow(new Object [] {new Integer(region.getColor()), region.getNombre(), "?"});
+                String numero = region.getNumero() != null ? region.getNumero().toString(): "?";
+                modelo.addRow(new Object [] {new Integer(region.getColor()), region.getNombre(), region.getNumero()});
             }
         }
     }
@@ -112,7 +113,7 @@ public class RegionesDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonDetalles)
                     .addComponent(jButtonSave))
-                .addContainerGap(100, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
