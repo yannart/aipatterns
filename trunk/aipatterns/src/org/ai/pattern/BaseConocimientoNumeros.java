@@ -42,55 +42,66 @@ public enum BaseConocimientoNumeros {
         BaseConocimientoNumeros solucion2 = null;
         int mejorPuntaje = 0;
         double menorDiferencia = Double.MAX_VALUE;
-        
-        if(hoyos == 2){
+
+        if (hoyos == 2) {
             return NUM8;
         }
+
+        if (momentos[0] < 0.843f + 0.843f * 0.25f && momentos[0] > 0.843f - 0.843f * 0.25f && momentos[1] < 0.618f + 0.618f * 0.25f && momentos[1] > 0.618f - 0.618f * 0.25f) {
+            return NUM4;
+        }
+
+        if (momentos[0] < 1.745f + 1.745f * 0.25f && momentos[0] > 1.745f - 1.745f * 0.25f && momentos[1] < 2.98f + 2.98f * 0.25f && momentos[1] > 2.98f - 2.98f * 0.25f) {
+            return NUM1;
+        }
         
+        if (momentos[0] < 1.502f + 1.502f * 0.25f && momentos[0] > 1.502f - 1.502f * 0.25f && momentos[1] < 2.05f + 2.05f * 0.25f && momentos[1] > 2.05f - 2.05f * 0.25f) {
+            return NUM2;
+        }
+
         for (BaseConocimientoNumeros numero : BaseConocimientoNumeros.values()) {
-            if(numero.hoyos < hoyos){
+            if (numero.hoyos < hoyos) {
                 continue;
             }
-            
+
             int puntaje = 0;
             double diferenciaCuadratica = 0;
-            
+
             diferenciaCuadratica += Math.sqrt(Math.pow(numero.hoyos - hoyos, 2));
-            
+
             diferenciaCuadratica += Math.sqrt(Math.pow(numero.densidad - densidad, 2)) / 10;
-            
+
             for (int j = 0; j < 3; j++) {
                 diferenciaCuadratica += Math.sqrt(Math.pow(numero.momentos[j] - momentos[j], 2));
             }
-            
-            if(diferenciaCuadratica < menorDiferencia){
+
+            if (diferenciaCuadratica < menorDiferencia) {
                 menorDiferencia = diferenciaCuadratica;
                 solucion2 = numero;
             }
-            
-            /*if (numero.hoyos == hoyos) {
-                puntaje++;
-            }
 
-            for (int j = 0; j < 3; j++) {
-                if (momentos[j] < numero.momentos[j] + numero.momentos[j] * 0.1f
-                        && momentos[j] > numero.momentos[j] - numero.momentos[j] * 0.1f) {
-                    puntaje++;
-                }
-            }
-
-            if (densidad < numero.densidad + numero.densidad * 0.1f
-                    && densidad > numero.densidad - numero.densidad * 0.1f) {
-                puntaje++;
-            }
-            
-            if(puntaje > mejorPuntaje){
-                mejorPuntaje = puntaje;
-                solucion = numero;
-            }
-            */
+//            if (numero.hoyos == hoyos) {
+//                puntaje++;
+//            }
+//
+//            for (int j = 0; j < 3; j++) {
+//                if (momentos[j] < numero.momentos[j] + numero.momentos[j] * 0.1f
+//                        && momentos[j] > numero.momentos[j] - numero.momentos[j] * 0.1f) {
+//                    puntaje++;
+//                }
+//            }
+//
+//            if (densidad < numero.densidad + numero.densidad * 0.1f
+//                    && densidad > numero.densidad - numero.densidad * 0.1f) {
+//                puntaje++;
+//            }
+//
+//            if(puntaje > mejorPuntaje){
+//                mejorPuntaje = puntaje;
+//                solucion = numero;
+//            }
         }
-        
+
         return solucion2;
     }
 
